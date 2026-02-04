@@ -1,0 +1,303 @@
+programCode,originRegionCode,destinationRegionCode,cabinClass,partnerType,minMiles,maxMiles,typicalMiles,isOneWay,notes
+ANA,JAPAN,KOREA,economy,any,15000,15000,15000,false,ANA partner award - round-trip
+ANA,JAPAN,KOREA,business,any,30000,30000,30000,false,ANA partner award - round-trip
+ANA,JAPAN,KOREA,first,any,45000,45000,45000,false,ANA partner award - round-trip
+ANA,JAPAN,ASIA1,economy,any,20000,20000,20000,false,ANA partner award - round-trip (China/HK/Taiwan)
+ANA,JAPAN,ASIA1,business,any,40000,40000,40000,false,ANA partner award - round-trip
+ANA,JAPAN,ASIA1,first,any,60000,60000,60000,false,ANA partner award - round-trip
+ANA,JAPAN,ASIA2,economy,any,25000,25000,25000,false,ANA partner award - round-trip (Southeast Asia)
+ANA,JAPAN,ASIA2,business,any,55000,55000,55000,false,ANA partner award - round-trip
+ANA,JAPAN,ASIA2,first,any,75000,75000,75000,false,ANA partner award - round-trip
+ANA,JAPAN,HAWAII,economy,any,30000,30000,30000,false,ANA partner award - round-trip
+ANA,JAPAN,HAWAII,business,any,60000,60000,60000,false,ANA partner award - round-trip
+ANA,JAPAN,HAWAII,first,any,90000,90000,90000,false,ANA partner award - round-trip
+ANA,JAPAN,NA,economy,any,50000,50000,50000,false,ANA partner award - round-trip
+ANA,JAPAN,NA,business,any,75000,75000,75000,false,ANA partner award - round-trip
+ANA,JAPAN,NA,first,any,115000,115000,115000,false,ANA partner award - round-trip
+ANA,JAPAN,EUROPE,economy,any,45000,45000,45000,false,ANA partner award - round-trip
+ANA,JAPAN,EUROPE,business,any,80000,80000,80000,false,ANA partner award - round-trip
+ANA,JAPAN,EUROPE,first,any,120000,120000,120000,false,ANA partner award - round-trip
+ANA,JAPAN,OCEANIA,economy,any,35000,35000,35000,false,ANA partner award - round-trip
+ANA,JAPAN,OCEANIA,business,any,65000,65000,65000,false,ANA partner award - round-trip
+ANA,JAPAN,OCEANIA,first,any,95000,95000,95000,false,ANA partner award - round-trip
+ANA,NA,JAPAN,economy,any,50000,50000,50000,false,ANA partner award - round-trip
+ANA,NA,JAPAN,business,any,75000,75000,75000,false,ANA partner award - round-trip
+ANA,NA,JAPAN,first,any,115000,115000,115000,false,ANA partner award - round-trip
+ANA,NA,ASIA1,economy,any,55000,55000,55000,false,ANA partner award - round-trip
+ANA,NA,ASIA1,business,any,85000,85000,85000,false,ANA partner award - round-trip
+ANA,NA,ASIA1,first,any,130000,130000,130000,false,ANA partner award - round-trip
+ANA,NA,ASIA2,economy,any,55000,55000,55000,false,ANA partner award - round-trip
+ANA,NA,ASIA2,business,any,90000,90000,90000,false,ANA partner award - round-trip
+ANA,NA,ASIA2,first,any,135000,135000,135000,false,ANA partner award - round-trip
+ANA,NA,HAWAII,economy,any,35000,35000,35000,false,ANA partner award - round-trip
+ANA,NA,HAWAII,business,any,60000,60000,60000,false,ANA partner award - round-trip
+ANA,NA,HAWAII,first,any,80000,80000,80000,false,ANA partner award - round-trip
+ANA,NA,EUROPE,economy,any,55000,55000,55000,false,ANA partner award - round-trip
+ANA,NA,EUROPE,business,any,88000,88000,88000,false,ANA partner award - round-trip
+ANA,NA,EUROPE,first,any,138000,138000,138000,false,ANA partner award - round-trip
+ANA,EUROPE,JAPAN,economy,any,45000,45000,45000,false,ANA partner award - round-trip
+ANA,EUROPE,JAPAN,business,any,80000,80000,80000,false,ANA partner award - round-trip
+ANA,EUROPE,JAPAN,first,any,120000,120000,120000,false,ANA partner award - round-trip
+ANA,EUROPE,NA,economy,any,55000,55000,55000,false,ANA partner award - round-trip
+ANA,EUROPE,NA,business,any,88000,88000,88000,false,ANA partner award - round-trip
+ANA,EUROPE,NA,first,any,138000,138000,138000,false,ANA partner award - round-trip
+AEROPLAN,NA_LONG,PACIFIC,economy,any,35000,45000,40000,true,Distance-based (5001-7500mi)
+AEROPLAN,NA_LONG,PACIFIC,premium_economy,any,50000,75000,60000,true,Distance-based
+AEROPLAN,NA_LONG,PACIFIC,business,any,75000,90000,80000,true,Fixed partner rate
+AEROPLAN,NA_LONG,PACIFIC,first,any,105000,120000,110000,true,Limited partner availability
+AEROPLAN,NA_LONG,ATLANTIC,economy,any,30000,45000,35000,true,Distance-based
+AEROPLAN,NA_LONG,ATLANTIC,premium_economy,any,45000,70000,55000,true,Distance-based
+AEROPLAN,NA_LONG,ATLANTIC,business,any,60000,80000,70000,true,Fixed partner rate
+AEROPLAN,NA_LONG,ATLANTIC,first,any,90000,110000,100000,true,Limited availability
+AEROPLAN,NA_LONG,SA,economy,any,25000,40000,30000,true,Distance-based
+AEROPLAN,NA_LONG,SA,premium_economy,any,40000,60000,50000,true,Distance-based
+AEROPLAN,NA_LONG,SA,business,any,55000,70000,60000,true,Fixed partner rate
+AEROPLAN,NA_LONG,SA,first,any,85000,100000,90000,true,Limited availability
+AEROPLAN,NA_SHORT,NA_LONG,economy,any,6000,15000,10000,true,Distance-based (0-2750mi)
+AEROPLAN,NA_SHORT,NA_LONG,premium_economy,any,10000,30000,17500,true,Distance-based
+AEROPLAN,NA_SHORT,NA_LONG,business,any,15000,35000,25000,true,Distance-based
+UNITED,US,JAPAN,economy,own_metal,55000,120000,70000,true,Dynamic pricing - own metal
+UNITED,US,JAPAN,business,own_metal,100000,250000,130000,true,Dynamic pricing - own metal
+UNITED,US,JAPAN,economy,partner,60500,100000,75000,true,Partner airlines (ANA/Star Alliance)
+UNITED,US,JAPAN,business,partner,110000,200000,140000,true,Partner airlines
+UNITED,US,JAPAN,first,partner,121000,180000,150000,true,Partner first class
+UNITED,US,EUROPE,economy,own_metal,30000,80000,45000,true,Dynamic pricing
+UNITED,US,EUROPE,premium_economy,own_metal,50000,120000,70000,true,Dynamic pricing
+UNITED,US,EUROPE,business,own_metal,80000,200000,100000,true,Dynamic pricing
+UNITED,US,EUROPE,economy,partner,30000,60000,40000,true,Partner airlines
+UNITED,US,EUROPE,business,partner,88000,150000,100000,true,Partner airlines
+UNITED,US,EUROPE,first,partner,121000,180000,140000,true,Partner first class
+UNITED,US,APAC,economy,own_metal,45000,100000,60000,true,Dynamic pricing
+UNITED,US,APAC,business,own_metal,85000,220000,110000,true,Dynamic pricing
+UNITED,US,APAC,economy,partner,49500,80000,60000,true,Partner airlines
+UNITED,US,APAC,business,partner,93500,160000,120000,true,Partner airlines
+UNITED,US,APAC,first,partner,121000,180000,150000,true,Partner first class
+UNITED,US,US,economy,own_metal,5000,30000,12500,true,Saver vs Standard pricing
+UNITED,US,US,business,own_metal,30000,80000,45000,true,Domestic first/business
+AADVANTAGE,US,EUROPE,economy,own_metal,25000,80000,40000,true,Dynamic - starting rate 25K
+AADVANTAGE,US,EUROPE,premium_economy,own_metal,50000,120000,70000,true,Dynamic pricing
+AADVANTAGE,US,EUROPE,business,own_metal,75000,200000,100000,true,Dynamic pricing
+AADVANTAGE,US,EUROPE,economy,partner,22500,50000,35000,true,Partner off-peak rate
+AADVANTAGE,US,EUROPE,business,partner,57500,100000,75000,true,Partner business
+AADVANTAGE,US,EUROPE,first,partner,85000,150000,100000,true,Partner first class
+AADVANTAGE,US,ASIA,economy,own_metal,35000,100000,55000,true,Dynamic pricing
+AADVANTAGE,US,ASIA,premium_economy,own_metal,60000,150000,85000,true,Dynamic pricing
+AADVANTAGE,US,ASIA,business,own_metal,95000,250000,140000,true,Dynamic pricing
+AADVANTAGE,US,ASIA,economy,partner,35000,70000,50000,true,Partner JAL/Cathay
+AADVANTAGE,US,ASIA,business,partner,60000,120000,80000,true,Partner business
+AADVANTAGE,US,ASIA,first,partner,80000,150000,100000,true,Partner first class
+AADVANTAGE,US,US,economy,own_metal,7500,25000,12500,true,Web specials available
+AADVANTAGE,US,US,business,own_metal,15000,50000,25000,true,Domestic first
+AADVANTAGE,US,US,economy,partner,12500,30000,17500,true,Partner domestic
+AADVANTAGE,US,US,business,partner,25000,60000,35000,true,Partner first
+AADVANTAGE,US,CARIBBEAN,economy,own_metal,10000,35000,17500,true,Dynamic pricing
+AADVANTAGE,US,CARIBBEAN,business,own_metal,20000,60000,35000,true,Dynamic pricing
+AADVANTAGE,US,SA_SHORT,economy,own_metal,15000,50000,25000,true,Northern South America
+AADVANTAGE,US,SA_SHORT,business,own_metal,30000,80000,50000,true,Dynamic pricing
+AADVANTAGE,US,SA_LONG,economy,own_metal,30000,80000,45000,true,Southern South America
+AADVANTAGE,US,SA_LONG,business,own_metal,90000,180000,120000,true,Dynamic pricing
+AADVANTAGE,US,HAWAII,economy,own_metal,20000,60000,35000,true,Dynamic pricing
+AADVANTAGE,US,HAWAII,premium_economy,own_metal,40000,100000,60000,true,Dynamic pricing
+AADVANTAGE,US,HAWAII,business,own_metal,60000,150000,80000,true,Limited lie-flat
+AVIOS_BA,ZONE1,ZONE1,economy,own_metal,4750,5250,4750,true,BA/Iberia/Aer Lingus off-peak
+AVIOS_BA,ZONE1,ZONE1,business,own_metal,8500,9750,8500,true,Off-peak rate
+AVIOS_BA,ZONE2,ZONE2,economy,own_metal,7250,8250,7250,true,Intra-Europe off-peak
+AVIOS_BA,ZONE2,ZONE2,business,own_metal,13500,15750,13500,true,Off-peak rate
+AVIOS_BA,ZONE3,ZONE3,economy,own_metal,9250,10750,9250,true,Off-peak
+AVIOS_BA,ZONE3,ZONE3,business,own_metal,17750,18350,17750,true,Off-peak rate
+AVIOS_BA,ZONE4,ZONE4,economy,own_metal,10000,12500,10000,true,Off-peak
+AVIOS_BA,ZONE4,ZONE4,business,own_metal,31250,37500,31250,true,Off-peak rate
+AVIOS_BA,ZONE5,ZONE5,economy,own_metal,13000,20000,13000,true,NYC-LHR type routes
+AVIOS_BA,ZONE5,ZONE5,business,own_metal,50000,60000,50000,true,Off-peak rate
+AVIOS_BA,ZONE6,ZONE6,economy,own_metal,16250,25000,16250,true,LAX-LHR type routes
+AVIOS_BA,ZONE6,ZONE6,business,own_metal,62500,75000,62500,true,Off-peak rate
+AVIOS_BA,ZONE7,ZONE7,economy,own_metal,19500,30000,19500,true,Off-peak
+AVIOS_BA,ZONE7,ZONE7,business,own_metal,75000,90000,75000,true,Off-peak rate
+AVIOS_BA,ZONE8,ZONE8,economy,own_metal,22750,35000,22750,true,Off-peak
+AVIOS_BA,ZONE8,ZONE8,business,own_metal,87500,105000,87500,true,Off-peak rate
+AVIOS_BA,ZONE9,ZONE9,economy,own_metal,32500,50000,32500,true,Off-peak
+AVIOS_BA,ZONE9,ZONE9,business,own_metal,125000,150000,125000,true,Off-peak rate
+AVIOS_BA,ZONE9,ZONE9,first,own_metal,187500,225000,187500,true,Off-peak - limited routes
+AVIOS_BA,ZONE1,ZONE1,economy,partner,6000,7500,6000,true,Oneworld partner
+AVIOS_BA,ZONE1,ZONE1,business,partner,12500,15000,12500,true,Oneworld partner
+AVIOS_BA,ZONE5,ZONE5,economy,partner,20750,26000,20750,true,AA transatlantic
+AVIOS_BA,ZONE5,ZONE5,business,partner,62000,75000,62000,true,AA business class
+AVIOS_BA,ZONE9,ZONE9,economy,partner,51500,65000,51500,true,Qantas/JAL ultra long
+AVIOS_BA,ZONE9,ZONE9,business,partner,154500,185000,154500,true,Qantas/JAL business
+KRISFLYER,SINGAPORE,EUROPE,economy,own_metal,42000,70000,42000,true,Saver/Advantage one-way
+KRISFLYER,SINGAPORE,EUROPE,premium_economy,own_metal,71000,90000,71000,true,Saver rate
+KRISFLYER,SINGAPORE,EUROPE,business,own_metal,103500,123000,103500,true,Saver rate
+KRISFLYER,SINGAPORE,EUROPE,first,own_metal,141000,225500,141000,true,Suites/First Saver
+KRISFLYER,SINGAPORE,US_WEST,economy,own_metal,44000,75000,44000,true,Saver rate
+KRISFLYER,SINGAPORE,US_WEST,premium_economy,own_metal,80500,100000,80500,true,Saver rate
+KRISFLYER,SINGAPORE,US_WEST,business,own_metal,111500,143500,111500,true,Saver rate
+KRISFLYER,SINGAPORE,US_WEST,first,own_metal,148500,243000,148500,true,Suites class
+KRISFLYER,SINGAPORE,US_EAST,economy,own_metal,44000,75000,44000,true,Saver rate
+KRISFLYER,SINGAPORE,US_EAST,premium_economy,own_metal,80500,100000,80500,true,Saver rate
+KRISFLYER,SINGAPORE,US_EAST,business,own_metal,111500,143500,111500,true,Saver rate
+KRISFLYER,SINGAPORE,US_EAST,first,own_metal,148500,243000,148500,true,Suites class
+KRISFLYER,SINGAPORE,OCEANIA,economy,own_metal,22000,40000,22000,true,Saver rate
+KRISFLYER,SINGAPORE,OCEANIA,premium_economy,own_metal,38500,55000,38500,true,Saver rate
+KRISFLYER,SINGAPORE,OCEANIA,business,own_metal,52000,75000,52000,true,Saver rate
+KRISFLYER,SINGAPORE,OCEANIA,first,own_metal,74000,120000,74000,true,First class Saver
+KRISFLYER,SINGAPORE,NORTH_ASIA,economy,own_metal,25000,45000,25000,true,Saver rate
+KRISFLYER,SINGAPORE,NORTH_ASIA,premium_economy,own_metal,45000,60000,45000,true,Saver rate
+KRISFLYER,SINGAPORE,NORTH_ASIA,business,own_metal,62000,85000,62000,true,Saver rate
+KRISFLYER,SINGAPORE,NORTH_ASIA,first,own_metal,87000,140000,87000,true,First Saver
+KRISFLYER,NA,EUROPE,economy,partner,55000,75000,55000,false,Star Alliance round-trip
+KRISFLYER,NA,EUROPE,business,partner,130000,170000,130000,false,Star Alliance business
+KRISFLYER,NA,EUROPE,first,partner,160000,210000,160000,false,Star Alliance first
+KRISFLYER,SINGAPORE,EUROPE,economy,partner,90000,120000,90000,false,Star Alliance round-trip
+KRISFLYER,SINGAPORE,EUROPE,business,partner,160000,200000,160000,false,Star Alliance business
+KRISFLYER,SINGAPORE,EUROPE,first,partner,215000,280000,215000,false,Star Alliance first
+ALASKA,AMERICAS_SHORT,AMERICAS_SHORT,economy,partner,4500,7500,5000,true,Under 700 miles
+ALASKA,AMERICAS_SHORT,AMERICAS_SHORT,premium_economy,partner,6000,10000,7500,true,Under 700 miles
+ALASKA,AMERICAS_SHORT,AMERICAS_SHORT,business,partner,9000,15000,12000,true,Under 700 miles
+ALASKA,AMERICAS_SHORT,AMERICAS_SHORT,first,partner,13500,25000,17500,true,Under 700 miles
+ALASKA,AMERICAS_MED,AMERICAS_MED,economy,partner,7500,12500,10000,true,701-1400 miles
+ALASKA,AMERICAS_MED,AMERICAS_MED,premium_economy,partner,10000,17500,12500,true,701-1400 miles
+ALASKA,AMERICAS_MED,AMERICAS_MED,business,partner,15000,25000,20000,true,701-1400 miles
+ALASKA,AMERICAS_MED,AMERICAS_MED,first,partner,25000,40000,30000,true,701-1400 miles
+ALASKA,AMERICAS_LONG,AMERICAS_LONG,economy,partner,12500,25000,17500,true,1401-4000 miles
+ALASKA,AMERICAS_LONG,AMERICAS_LONG,premium_economy,partner,17500,32500,25000,true,1401-4000 miles
+ALASKA,AMERICAS_LONG,AMERICAS_LONG,business,partner,25000,50000,35000,true,1401-4000 miles
+ALASKA,AMERICAS_LONG,AMERICAS_LONG,first,partner,40000,75000,55000,true,1401-4000 miles
+ALASKA,AMERICAS_ULTRA,AMERICAS_ULTRA,economy,partner,25000,35000,30000,true,4001+ miles (Brazil etc)
+ALASKA,AMERICAS_ULTRA,AMERICAS_ULTRA,business,partner,50000,70000,60000,true,4001+ miles
+ALASKA,AMERICAS_ULTRA,AMERICAS_ULTRA,first,partner,75000,100000,87500,true,4001+ miles
+ALASKA,AMERICAS,EMEA_SHORT,economy,partner,20000,30000,25000,true,Under 4000 miles
+ALASKA,AMERICAS,EMEA_SHORT,business,partner,42500,62500,50000,true,Oneworld partners
+ALASKA,AMERICAS,EMEA_SHORT,first,partner,65000,95000,80000,true,BA/Iberia/Qatar
+ALASKA,AMERICAS,EMEA_LONG,economy,partner,30000,42500,35000,true,4001-6000 miles
+ALASKA,AMERICAS,EMEA_LONG,business,partner,57500,85000,70000,true,Oneworld partners
+ALASKA,AMERICAS,EMEA_LONG,first,partner,87500,130000,100000,true,Qatar/BA First
+ALASKA,AMERICAS,EMEA_ULTRA,economy,partner,35000,50000,42500,true,6001+ miles
+ALASKA,AMERICAS,EMEA_ULTRA,business,partner,70000,100000,85000,true,Oneworld partners
+ALASKA,AMERICAS,EMEA_ULTRA,first,partner,105000,150000,125000,true,Qatar/Emirates
+ALASKA,AMERICAS,APAC_SHORT,economy,partner,30000,42500,35000,true,Under 6000 miles
+ALASKA,AMERICAS,APAC_SHORT,business,partner,55000,82500,70000,true,JAL/Cathay
+ALASKA,AMERICAS,APAC_SHORT,first,partner,80000,120000,100000,true,JAL/Cathay First
+ALASKA,AMERICAS,APAC_LONG,economy,partner,35000,50000,42500,true,6001+ miles
+ALASKA,AMERICAS,APAC_LONG,business,partner,70000,100000,85000,true,JAL/Cathay/Qantas
+ALASKA,AMERICAS,APAC_LONG,first,partner,100000,150000,125000,true,JAL/Cathay First
+DELTA,US,US,economy,own_metal,16000,50000,25000,false,Basic Economy round-trip
+DELTA,US,US,premium_economy,own_metal,38000,80000,50000,false,Main Cabin
+DELTA,US,US,first,own_metal,53000,120000,70000,false,First Class
+DELTA,US,EUROPE,economy,own_metal,63000,150000,90000,false,Dynamic pricing
+DELTA,US,EUROPE,premium_economy,own_metal,108000,220000,150000,false,Premium Select
+DELTA,US,EUROPE,business,own_metal,357000,600000,450000,false,Delta One - highly variable
+DELTA,US,EUROPE,economy,partner,45000,90000,60000,false,AF/KLM partners
+DELTA,US,EUROPE,business,partner,150000,300000,200000,false,AF/KLM business
+DELTA,US,JAPAN,economy,own_metal,71000,180000,110000,false,Dynamic pricing
+DELTA,US,JAPAN,premium_economy,own_metal,128000,260000,175000,false,Premium Select
+DELTA,US,JAPAN,business,own_metal,391000,700000,500000,false,Delta One
+DELTA,US,JAPAN,economy,partner,50000,100000,70000,false,Korean Air partner
+DELTA,US,JAPAN,business,partner,100000,200000,140000,false,Korean Air business
+DELTA,US,HAWAII,economy,own_metal,28000,80000,45000,false,Dynamic pricing
+DELTA,US,HAWAII,premium_economy,own_metal,64000,140000,90000,false,Main Cabin Plus
+DELTA,US,HAWAII,first,own_metal,123000,200000,150000,false,First Class
+DELTA,US,CARIBBEAN,economy,own_metal,23000,60000,35000,false,Dynamic pricing
+DELTA,US,CARIBBEAN,business,own_metal,82000,150000,100000,false,Delta One where avail
+DELTA,US,OCEANIA,economy,own_metal,95000,180000,130000,false,Dynamic pricing
+DELTA,US,OCEANIA,premium_economy,own_metal,121000,280000,180000,false,Premium Select
+DELTA,US,OCEANIA,business,own_metal,428000,800000,550000,false,Delta One
+ASIA_MILES,HK,US_WEST,economy,own_metal,40000,55000,45000,true,Cathay metal
+ASIA_MILES,HK,US_WEST,premium_economy,own_metal,60000,80000,70000,true,Premium Economy
+ASIA_MILES,HK,US_WEST,business,own_metal,85000,110000,95000,true,Business Class
+ASIA_MILES,HK,US_WEST,first,own_metal,140000,180000,160000,true,First Class
+ASIA_MILES,HK,US_EAST,economy,own_metal,45000,60000,50000,true,Cathay metal
+ASIA_MILES,HK,US_EAST,premium_economy,own_metal,70000,90000,80000,true,Premium Economy
+ASIA_MILES,HK,US_EAST,business,own_metal,100000,130000,115000,true,Business Class
+ASIA_MILES,HK,US_EAST,first,own_metal,170000,220000,195000,true,First Class
+ASIA_MILES,HK,EUROPE,economy,own_metal,35000,50000,42000,true,Cathay metal
+ASIA_MILES,HK,EUROPE,premium_economy,own_metal,55000,75000,65000,true,Premium Economy
+ASIA_MILES,HK,EUROPE,business,own_metal,75000,100000,85000,true,Business Class
+ASIA_MILES,HK,EUROPE,first,own_metal,130000,170000,150000,true,First Class
+ASIA_MILES,HK,OCEANIA,economy,own_metal,25000,35000,30000,true,Cathay metal
+ASIA_MILES,HK,OCEANIA,premium_economy,own_metal,40000,55000,47000,true,Premium Economy
+ASIA_MILES,HK,OCEANIA,business,own_metal,55000,75000,65000,true,Business Class
+ASIA_MILES,HK,OCEANIA,first,own_metal,95000,125000,110000,true,First Class
+ASIA_MILES,HK,JAPAN,economy,own_metal,15000,22000,18000,true,Cathay metal
+ASIA_MILES,HK,JAPAN,premium_economy,own_metal,25000,35000,30000,true,Premium Economy
+ASIA_MILES,HK,JAPAN,business,own_metal,40000,55000,47000,true,Business Class
+ASIA_MILES,HK,JAPAN,first,own_metal,70000,95000,82000,true,First Class
+ASIA_MILES,HK,SE_ASIA,economy,own_metal,10000,15000,12000,true,Cathay metal
+ASIA_MILES,HK,SE_ASIA,premium_economy,own_metal,18000,25000,21000,true,Premium Economy
+ASIA_MILES,HK,SE_ASIA,business,own_metal,28000,40000,34000,true,Business Class
+ASIA_MILES,HK,SE_ASIA,first,own_metal,50000,70000,60000,true,First Class
+EMIRATES,DXB,US_EAST,economy,own_metal,50000,75000,62500,true,NYC/BOS/IAD routes
+EMIRATES,DXB,US_EAST,business,own_metal,100000,150000,125000,true,Business Class
+EMIRATES,DXB,US_EAST,first,own_metal,150000,220000,185000,true,First Class
+EMIRATES,DXB,US_WEST,economy,own_metal,55000,85000,70000,true,LAX/SFO routes
+EMIRATES,DXB,US_WEST,business,own_metal,110000,170000,140000,true,Business Class
+EMIRATES,DXB,US_WEST,first,own_metal,170000,250000,210000,true,First Class
+EMIRATES,DXB,EUROPE,economy,own_metal,25000,40000,32500,true,Short-haul Europe
+EMIRATES,DXB,EUROPE,business,own_metal,55000,85000,70000,true,Business Class
+EMIRATES,DXB,EUROPE,first,own_metal,85000,130000,107500,true,First Class
+EMIRATES,DXB,ASIA,economy,own_metal,35000,55000,45000,true,SE Asia/India
+EMIRATES,DXB,ASIA,business,own_metal,75000,115000,95000,true,Business Class
+EMIRATES,DXB,ASIA,first,own_metal,115000,175000,145000,true,First Class
+EMIRATES,DXB,OCEANIA,economy,own_metal,50000,75000,62500,true,Sydney/Melbourne
+EMIRATES,DXB,OCEANIA,business,own_metal,100000,150000,125000,true,Business Class
+EMIRATES,DXB,OCEANIA,first,own_metal,160000,240000,200000,true,First Class
+EMIRATES,US_EAST,OCEANIA,economy,partner,60000,90000,75000,true,Qantas partner
+EMIRATES,US_EAST,OCEANIA,business,partner,145000,200000,172500,true,Qantas business
+EMIRATES,US_EAST,OCEANIA,first,partner,220000,300000,260000,true,Qantas First limited
+FLYING_BLUE,EUROPE,US_EAST,economy,own_metal,25000,60000,35000,true,AF/KLM metal
+FLYING_BLUE,EUROPE,US_EAST,premium_economy,own_metal,40000,90000,55000,true,Premium Economy
+FLYING_BLUE,EUROPE,US_EAST,business,own_metal,70000,150000,95000,true,Business Class
+FLYING_BLUE,EUROPE,US_EAST,first,own_metal,150000,250000,180000,true,La Premiere (limited)
+FLYING_BLUE,EUROPE,US_WEST,economy,own_metal,30000,70000,42000,true,AF/KLM metal
+FLYING_BLUE,EUROPE,US_WEST,premium_economy,own_metal,45000,100000,65000,true,Premium Economy
+FLYING_BLUE,EUROPE,US_WEST,business,own_metal,80000,180000,110000,true,Business Class
+FLYING_BLUE,EUROPE,ASIA,economy,own_metal,35000,80000,50000,true,AF/KLM metal
+FLYING_BLUE,EUROPE,ASIA,business,own_metal,85000,200000,125000,true,Business Class
+FLYING_BLUE,EUROPE,EUROPE,economy,own_metal,6000,25000,12500,true,Intra-Europe
+FLYING_BLUE,EUROPE,EUROPE,business,own_metal,15000,60000,30000,true,Business Class
+KOREAN,KOREA,US_WEST,economy,own_metal,40000,50000,45000,true,Fixed rate
+KOREAN,KOREA,US_WEST,business,own_metal,80000,95000,87500,true,Prestige Class
+KOREAN,KOREA,US_WEST,first,own_metal,120000,150000,135000,true,First Class
+KOREAN,KOREA,US_EAST,economy,own_metal,45000,55000,50000,true,Fixed rate
+KOREAN,KOREA,US_EAST,business,own_metal,90000,105000,97500,true,Prestige Class
+KOREAN,KOREA,US_EAST,first,own_metal,140000,170000,155000,true,First Class
+KOREAN,KOREA,EUROPE,economy,own_metal,40000,50000,45000,true,Fixed rate
+KOREAN,KOREA,EUROPE,business,own_metal,80000,95000,87500,true,Prestige Class
+KOREAN,KOREA,EUROPE,first,own_metal,120000,150000,135000,true,First Class
+KOREAN,KOREA,SE_ASIA,economy,own_metal,15000,20000,17500,true,Fixed rate
+KOREAN,KOREA,SE_ASIA,business,own_metal,30000,40000,35000,true,Prestige Class
+KOREAN,KOREA,SE_ASIA,first,own_metal,50000,65000,57500,true,First Class
+KOREAN,KOREA,JAPAN,economy,own_metal,7500,12500,10000,true,Fixed rate
+KOREAN,KOREA,JAPAN,business,own_metal,15000,25000,20000,true,Prestige Class
+KOREAN,KOREA,JAPAN,first,own_metal,25000,40000,32500,true,First Class
+TURKISH,TURKEY,NA,economy,own_metal,30000,45000,37500,false,Fixed rate round-trip
+TURKISH,TURKEY,NA,business,own_metal,70000,100000,85000,false,Business Class
+TURKISH,TURKEY,EUROPE,economy,own_metal,15000,20000,17500,false,Short-haul
+TURKISH,TURKEY,EUROPE,business,own_metal,30000,45000,37500,false,Business Class
+TURKISH,TURKEY,ASIA,economy,own_metal,25000,40000,32500,false,Fixed rate
+TURKISH,TURKEY,ASIA,business,own_metal,55000,80000,67500,false,Business Class
+TURKISH,NA,EUROPE,economy,partner,25000,35000,30000,false,Star Alliance
+TURKISH,NA,EUROPE,business,partner,45000,65000,55000,false,Star Alliance business
+TURKISH,NA,ASIA,economy,partner,35000,50000,42500,false,Star Alliance
+TURKISH,NA,ASIA,business,partner,65000,95000,80000,false,Star Alliance business
+LIFEMILES,NA,EUROPE,economy,partner,35000,45000,40000,true,Star Alliance partners
+LIFEMILES,NA,EUROPE,business,partner,63000,80000,70000,true,Lufthansa/Swiss/TAP
+LIFEMILES,NA,EUROPE,first,partner,87000,110000,95000,true,Lufthansa First
+LIFEMILES,NA,ASIA,economy,partner,40000,55000,47500,true,Star Alliance
+LIFEMILES,NA,ASIA,business,partner,70000,90000,80000,true,ANA/EVA/Singapore
+LIFEMILES,NA,ASIA,first,partner,100000,130000,115000,true,First Class
+LIFEMILES,NA,NA,economy,partner,12500,20000,15000,true,Star Alliance
+LIFEMILES,NA,NA,business,partner,25000,40000,30000,true,Business Class
+LIFEMILES,NA,SA,economy,partner,25000,35000,30000,true,Star Alliance
+LIFEMILES,NA,SA,business,partner,50000,70000,60000,true,Business Class
+QANTAS,OCEANIA,US_WEST,economy,own_metal,41800,55000,48000,true,Qantas metal
+QANTAS,OCEANIA,US_WEST,premium_economy,own_metal,72000,95000,83500,true,Premium Economy
+QANTAS,OCEANIA,US_WEST,business,own_metal,108000,140000,124000,true,Business Class
+QANTAS,OCEANIA,US_WEST,first,own_metal,144000,190000,167000,true,First Class
+QANTAS,OCEANIA,ASIA,economy,own_metal,25000,35000,30000,true,Qantas metal
+QANTAS,OCEANIA,ASIA,business,own_metal,54000,75000,64500,true,Business Class
+QANTAS,OCEANIA,ASIA,first,own_metal,72000,100000,86000,true,First Class
+QANTAS,OCEANIA,EUROPE,economy,own_metal,50000,70000,60000,true,Via Singapore/Dubai
+QANTAS,OCEANIA,EUROPE,business,own_metal,120000,160000,140000,true,Business Class
+QANTAS,OCEANIA,EUROPE,first,own_metal,180000,240000,210000,true,First Class
+QANTAS,OCEANIA,OCEANIA,economy,own_metal,8000,18000,12000,true,Domestic flights
+QANTAS,OCEANIA,OCEANIA,business,own_metal,18000,36000,27000,true,Business Class

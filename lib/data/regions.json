@@ -1,0 +1,310 @@
+{
+  "programs": {
+    "ANA": {
+      "regions": [
+        { "code": "JAPAN", "name": "Japan" },
+        { "code": "KOREA", "name": "Korea" },
+        { "code": "ASIA1", "name": "Asia 1 (China/HK/Taiwan)" },
+        { "code": "ASIA2", "name": "Asia 2 (Southeast Asia)" },
+        { "code": "HAWAII", "name": "Hawaii" },
+        { "code": "NA", "name": "North America" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "OCEANIA", "name": "Oceania" }
+      ],
+      "mappings": {
+        "JAPAN": ["NRT", "HND", "KIX", "NGO", "FUK", "CTS"],
+        "KOREA": ["ICN", "GMP"],
+        "ASIA1": ["HKG", "TPE", "PEK", "PKX", "PVG", "SHA", "CAN", "SZX"],
+        "ASIA2": ["SIN", "BKK", "MNL", "KUL", "SGN", "HAN", "CGK", "DEL", "BOM"],
+        "HAWAII": ["HNL"],
+        "NA": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "YYZ", "YVR", "YUL", "YYC", "MEX", "CUN"],
+        "EUROPE": ["LHR", "LGW", "CDG", "ORY", "FRA", "MUC", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "CPH", "ARN", "OSL", "HEL", "DUB", "LIS", "ATH", "IST"],
+        "OCEANIA": ["SYD", "MEL", "BNE", "PER", "AKL"]
+      }
+    },
+    "AEROPLAN": {
+      "regions": [
+        { "code": "NA_SHORT", "name": "North America - Short Haul" },
+        { "code": "NA_LONG", "name": "North America - Long Haul" },
+        { "code": "PACIFIC", "name": "Pacific (Asia/Oceania)" },
+        { "code": "ATLANTIC", "name": "Atlantic (Europe/Middle East)" },
+        { "code": "SA", "name": "South America" }
+      ],
+      "mappings": {
+        "NA_SHORT": ["YYZ", "YVR", "YUL", "YYC"],
+        "NA_LONG": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "HNL", "MEX", "CUN"],
+        "PACIFIC": ["NRT", "HND", "KIX", "ICN", "HKG", "SIN", "BKK", "TPE", "SYD", "MEL", "AKL", "PEK", "PVG", "MNL", "KUL", "DEL", "BOM"],
+        "ATLANTIC": ["LHR", "LGW", "CDG", "FRA", "AMS", "MAD", "BCN", "FCO", "ZRH", "VIE", "IST", "DXB", "DOH", "AUH", "TLV", "CAI"],
+        "SA": ["GRU", "GIG", "EZE", "SCL", "BOG", "LIM"]
+      }
+    },
+    "UNITED": {
+      "regions": [
+        { "code": "US", "name": "United States" },
+        { "code": "JAPAN", "name": "Japan" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "APAC", "name": "Asia Pacific" }
+      ],
+      "mappings": {
+        "US": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "HNL"],
+        "JAPAN": ["NRT", "HND", "KIX", "NGO", "FUK"],
+        "EUROPE": ["LHR", "CDG", "FRA", "AMS", "MAD", "FCO", "ZRH", "VIE", "IST", "MUC", "DUB", "LIS"],
+        "APAC": ["ICN", "HKG", "SIN", "BKK", "TPE", "PEK", "PVG", "SYD", "MEL", "DEL", "BOM"]
+      }
+    },
+    "AADVANTAGE": {
+      "regions": [
+        { "code": "US", "name": "United States (Contiguous)" },
+        { "code": "HAWAII", "name": "Hawaii/Alaska" },
+        { "code": "CARIBBEAN", "name": "Caribbean/Central America" },
+        { "code": "SA_SHORT", "name": "South America - Northern" },
+        { "code": "SA_LONG", "name": "South America - Southern" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "ASIA", "name": "Asia/Middle East/South Pacific" }
+      ],
+      "mappings": {
+        "US": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "YYZ", "YVR", "YUL", "YYC"],
+        "HAWAII": ["HNL"],
+        "CARIBBEAN": ["CUN", "MEX"],
+        "SA_SHORT": ["BOG", "LIM"],
+        "SA_LONG": ["GRU", "GIG", "EZE", "SCL"],
+        "EUROPE": ["LHR", "LGW", "CDG", "FRA", "MUC", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "DUB", "ATH"],
+        "ASIA": ["NRT", "HND", "HKG", "SYD", "MEL", "AKL", "DXB", "DOH", "TLV"]
+      }
+    },
+    "AVIOS_BA": {
+      "regions": [
+        { "code": "ZONE1", "name": "Zone 1 (1-650 miles)" },
+        { "code": "ZONE2", "name": "Zone 2 (651-1151 miles)" },
+        { "code": "ZONE3", "name": "Zone 3 (1152-2000 miles)" },
+        { "code": "ZONE4", "name": "Zone 4 (2001-3000 miles)" },
+        { "code": "ZONE5", "name": "Zone 5 (3001-4000 miles)" },
+        { "code": "ZONE6", "name": "Zone 6 (4001-5500 miles)" },
+        { "code": "ZONE7", "name": "Zone 7 (5501-6500 miles)" },
+        { "code": "ZONE8", "name": "Zone 8 (6501-7000 miles)" },
+        { "code": "ZONE9", "name": "Zone 9 (7001+ miles)" }
+      ],
+      "mappings": {
+        "ZONE1": ["LHR", "LGW", "DUB", "AMS", "CDG", "ORY"],
+        "ZONE2": ["MAD", "BCN", "LIS", "FCO", "ZRH", "VIE", "MUC", "FRA"],
+        "ZONE3": ["ATH", "IST", "CPH", "ARN", "OSL", "HEL"],
+        "ZONE4": ["TLV", "CAI", "DXB"],
+        "ZONE5": ["JFK", "BOS", "EWR", "IAD", "MIA"],
+        "ZONE6": ["ORD", "DFW", "ATL", "DEN", "LAX", "SFO", "SEA", "PHX", "LAS"],
+        "ZONE7": ["HNL", "MEX", "CUN"],
+        "ZONE8": ["BOG", "LIM", "DEL", "BOM"],
+        "ZONE9": ["NRT", "HND", "HKG", "SIN", "BKK", "SYD", "MEL", "AKL", "GRU", "EZE", "SCL", "PEK", "PVG"]
+      },
+      "_note": "BA uses distance-based pricing. These mappings are approximate based on distance from London."
+    },
+    "KRISFLYER": {
+      "regions": [
+        { "code": "SINGAPORE", "name": "Singapore" },
+        { "code": "SE_ASIA", "name": "Southeast Asia" },
+        { "code": "NORTH_ASIA", "name": "North Asia (Japan/Korea/China)" },
+        { "code": "OCEANIA", "name": "Oceania (Australia/NZ)" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "NA", "name": "North America (general)" }
+      ],
+      "mappings": {
+        "SINGAPORE": ["SIN"],
+        "SE_ASIA": ["BKK", "KUL", "MNL", "SGN", "HAN", "CGK", "DEL", "BOM"],
+        "NORTH_ASIA": ["NRT", "HND", "KIX", "ICN", "GMP", "HKG", "TPE", "PEK", "PVG", "SHA", "CAN", "SZX"],
+        "OCEANIA": ["SYD", "MEL", "BNE", "PER", "AKL"],
+        "EUROPE": ["LHR", "LGW", "CDG", "FRA", "MUC", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "CPH"],
+        "US_WEST": ["LAX", "SFO", "SEA", "LAS", "PHX", "DEN"],
+        "US_EAST": ["JFK", "EWR", "BOS", "IAD", "MIA", "ATL", "ORD", "DFW"],
+        "NA": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "YYZ", "YVR", "YUL", "YYC"]
+      }
+    },
+    "ALASKA": {
+      "regions": [
+        { "code": "AMERICAS_SHORT", "name": "Americas - Under 700 miles" },
+        { "code": "AMERICAS_MED", "name": "Americas - 701-1400 miles" },
+        { "code": "AMERICAS_LONG", "name": "Americas - 1401-4000 miles" },
+        { "code": "AMERICAS_ULTRA", "name": "Americas - 4001+ miles" },
+        { "code": "AMERICAS", "name": "Americas (all)" },
+        { "code": "EMEA_SHORT", "name": "EMEA - Under 4000 miles" },
+        { "code": "EMEA_LONG", "name": "EMEA - 4001-6000 miles" },
+        { "code": "EMEA_ULTRA", "name": "EMEA - 6001+ miles" },
+        { "code": "APAC_SHORT", "name": "Asia Pacific - Under 6000 miles" },
+        { "code": "APAC_LONG", "name": "Asia Pacific - 6001+ miles" }
+      ],
+      "mappings": {
+        "AMERICAS_SHORT": ["SEA", "SFO", "LAX", "YVR"],
+        "AMERICAS_MED": ["DEN", "PHX", "LAS", "YYC", "ORD", "DFW"],
+        "AMERICAS_LONG": ["JFK", "BOS", "MIA", "ATL", "EWR", "IAD", "YYZ", "YUL", "MEX", "CUN", "HNL"],
+        "AMERICAS_ULTRA": ["GRU", "GIG", "EZE", "SCL", "BOG", "LIM"],
+        "AMERICAS": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "HNL", "YYZ", "YVR", "YUL", "YYC", "MEX", "CUN", "GRU", "GIG", "EZE", "SCL", "BOG", "LIM"],
+        "EMEA_SHORT": ["LHR", "LGW", "DUB", "LIS"],
+        "EMEA_LONG": ["CDG", "FRA", "AMS", "MAD", "BCN", "FCO", "ZRH", "MUC"],
+        "EMEA_ULTRA": ["IST", "DXB", "DOH", "AUH", "TLV", "CAI", "JNB", "CPT"],
+        "APAC_SHORT": ["NRT", "HND", "HKG"],
+        "APAC_LONG": ["SIN", "BKK", "SYD", "MEL", "AKL", "ICN", "TPE", "PEK", "PVG", "DEL", "BOM"]
+      },
+      "_note": "Alaska uses distance-based pricing. Region assignment depends on origin airport (typically SEA)."
+    },
+    "DELTA": {
+      "regions": [
+        { "code": "US", "name": "United States (Lower 48)" },
+        { "code": "CANADA", "name": "Canada" },
+        { "code": "HAWAII", "name": "Hawaii" },
+        { "code": "CARIBBEAN", "name": "Caribbean/Mexico" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "JAPAN", "name": "Japan" },
+        { "code": "ASIA_PACIFIC", "name": "Asia Pacific" },
+        { "code": "OCEANIA", "name": "Australia/New Zealand" }
+      ],
+      "mappings": {
+        "US": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS"],
+        "CANADA": ["YYZ", "YVR", "YUL", "YYC"],
+        "HAWAII": ["HNL"],
+        "CARIBBEAN": ["CUN", "MEX"],
+        "EUROPE": ["LHR", "CDG", "FRA", "AMS", "FCO", "MUC", "ZRH", "MAD", "BCN"],
+        "JAPAN": ["NRT", "HND"],
+        "ASIA_PACIFIC": ["ICN", "HKG", "SIN", "BKK", "PEK", "PVG"],
+        "OCEANIA": ["SYD", "MEL", "AKL"]
+      }
+    },
+    "ASIA_MILES": {
+      "regions": [
+        { "code": "HK", "name": "Hong Kong" },
+        { "code": "SE_ASIA", "name": "Southeast Asia" },
+        { "code": "JAPAN", "name": "Japan" },
+        { "code": "NORTH_ASIA", "name": "North Asia (Korea/China/Taiwan)" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "OCEANIA", "name": "Oceania" }
+      ],
+      "mappings": {
+        "HK": ["HKG"],
+        "SE_ASIA": ["SIN", "BKK", "MNL", "KUL", "SGN", "HAN", "CGK", "DEL", "BOM"],
+        "JAPAN": ["NRT", "HND", "KIX", "NGO", "FUK", "CTS"],
+        "NORTH_ASIA": ["ICN", "GMP", "TPE", "PEK", "PKX", "PVG", "SHA", "CAN", "SZX"],
+        "US_WEST": ["LAX", "SFO", "SEA", "LAS", "PHX", "DEN"],
+        "US_EAST": ["JFK", "EWR", "BOS", "IAD", "MIA", "ATL", "ORD", "DFW"],
+        "EUROPE": ["LHR", "LGW", "CDG", "FRA", "AMS", "MAD", "BCN", "FCO", "ZRH", "VIE", "MUC"],
+        "OCEANIA": ["SYD", "MEL", "BNE", "PER", "AKL"]
+      }
+    },
+    "EMIRATES": {
+      "regions": [
+        { "code": "DXB", "name": "Dubai/UAE" },
+        { "code": "MIDDLE_EAST", "name": "Middle East" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "ASIA", "name": "Asia" },
+        { "code": "OCEANIA", "name": "Australia/New Zealand" },
+        { "code": "AFRICA", "name": "Africa" }
+      ],
+      "mappings": {
+        "DXB": ["DXB", "AUH"],
+        "MIDDLE_EAST": ["DOH", "TLV", "CAI"],
+        "US_EAST": ["JFK", "EWR", "BOS", "IAD", "MIA", "ATL", "ORD"],
+        "US_WEST": ["LAX", "SFO", "SEA", "DFW", "DEN", "HNL"],
+        "EUROPE": ["LHR", "LGW", "CDG", "FRA", "MUC", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "ATH", "IST"],
+        "ASIA": ["NRT", "HND", "HKG", "SIN", "BKK", "KUL", "MNL", "ICN", "PEK", "PVG", "DEL", "BOM"],
+        "OCEANIA": ["SYD", "MEL", "BNE", "PER", "AKL"],
+        "AFRICA": ["JNB", "CPT"]
+      }
+    },
+    "FLYING_BLUE": {
+      "regions": [
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "ASIA", "name": "Asia" },
+        { "code": "AFRICA", "name": "Africa/Middle East" },
+        { "code": "SA", "name": "South America" }
+      ],
+      "mappings": {
+        "EUROPE": ["LHR", "CDG", "ORY", "FRA", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "CPH", "ARN", "OSL", "HEL", "DUB", "LIS", "ATH", "IST", "MUC"],
+        "US_EAST": ["JFK", "EWR", "BOS", "IAD", "MIA", "ATL", "ORD"],
+        "US_WEST": ["LAX", "SFO", "SEA", "DFW", "DEN", "PHX", "LAS"],
+        "ASIA": ["NRT", "HND", "HKG", "SIN", "BKK", "ICN", "PEK", "PVG", "DEL", "BOM"],
+        "AFRICA": ["DXB", "DOH", "CAI", "JNB", "CPT"],
+        "SA": ["GRU", "GIG", "EZE", "SCL", "BOG", "LIM"]
+      }
+    },
+    "KOREAN": {
+      "regions": [
+        { "code": "KOREA", "name": "South Korea" },
+        { "code": "JAPAN", "name": "Japan" },
+        { "code": "SE_ASIA", "name": "Southeast Asia" },
+        { "code": "CHINA", "name": "China/Hong Kong/Taiwan" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "OCEANIA", "name": "Oceania" }
+      ],
+      "mappings": {
+        "KOREA": ["ICN", "GMP"],
+        "JAPAN": ["NRT", "HND", "KIX", "NGO", "FUK", "CTS"],
+        "SE_ASIA": ["SIN", "BKK", "MNL", "KUL", "SGN", "HAN", "CGK"],
+        "CHINA": ["HKG", "TPE", "PEK", "PVG", "SHA", "CAN", "SZX"],
+        "US_WEST": ["LAX", "SFO", "SEA", "LAS"],
+        "US_EAST": ["JFK", "EWR", "ATL", "ORD", "DFW", "IAD"],
+        "EUROPE": ["LHR", "CDG", "FRA", "AMS", "FCO", "ZRH", "VIE", "MAD"],
+        "OCEANIA": ["SYD", "MEL", "AKL"]
+      }
+    },
+    "TURKISH": {
+      "regions": [
+        { "code": "TURKEY", "name": "Turkey" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "NA", "name": "North America" },
+        { "code": "ASIA", "name": "Asia" },
+        { "code": "MIDDLE_EAST", "name": "Middle East" },
+        { "code": "AFRICA", "name": "Africa" }
+      ],
+      "mappings": {
+        "TURKEY": ["IST"],
+        "EUROPE": ["LHR", "LGW", "CDG", "FRA", "MUC", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "CPH", "ARN", "ATH"],
+        "NA": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "ATL", "IAD", "DFW", "YYZ"],
+        "ASIA": ["NRT", "HND", "HKG", "SIN", "BKK", "ICN", "PEK", "PVG", "DEL", "BOM"],
+        "MIDDLE_EAST": ["DXB", "DOH", "AUH", "TLV"],
+        "AFRICA": ["CAI", "JNB", "CPT"]
+      }
+    },
+    "LIFEMILES": {
+      "regions": [
+        { "code": "NA", "name": "North America" },
+        { "code": "SA", "name": "South America" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "ASIA", "name": "Asia" },
+        { "code": "OCEANIA", "name": "Oceania" },
+        { "code": "MIDDLE_EAST", "name": "Middle East" }
+      ],
+      "mappings": {
+        "NA": ["JFK", "LAX", "SFO", "ORD", "MIA", "BOS", "SEA", "DFW", "ATL", "DEN", "IAD", "EWR", "PHX", "LAS", "HNL", "YYZ", "YVR", "YUL", "YYC", "MEX", "CUN"],
+        "SA": ["GRU", "GIG", "EZE", "SCL", "BOG", "LIM"],
+        "EUROPE": ["LHR", "CDG", "FRA", "AMS", "MAD", "BCN", "FCO", "MXP", "ZRH", "VIE", "MUC", "LIS"],
+        "ASIA": ["NRT", "HND", "HKG", "SIN", "BKK", "ICN", "TPE", "PEK", "PVG"],
+        "OCEANIA": ["SYD", "MEL", "AKL"],
+        "MIDDLE_EAST": ["DXB", "DOH", "TLV"]
+      }
+    },
+    "QANTAS": {
+      "regions": [
+        { "code": "OCEANIA", "name": "Australia/New Zealand" },
+        { "code": "ASIA", "name": "Asia" },
+        { "code": "US_WEST", "name": "USA West Coast" },
+        { "code": "US_EAST", "name": "USA East Coast" },
+        { "code": "EUROPE", "name": "Europe" },
+        { "code": "MIDDLE_EAST", "name": "Middle East" }
+      ],
+      "mappings": {
+        "OCEANIA": ["SYD", "MEL", "BNE", "PER", "AKL"],
+        "ASIA": ["NRT", "HND", "HKG", "SIN", "BKK", "MNL", "KUL", "CGK", "DEL", "BOM"],
+        "US_WEST": ["LAX", "SFO", "DFW"],
+        "US_EAST": ["JFK", "ORD"],
+        "EUROPE": ["LHR", "CDG", "FRA", "AMS", "FCO"],
+        "MIDDLE_EAST": ["DXB", "DOH"]
+      }
+    }
+  }
+}
