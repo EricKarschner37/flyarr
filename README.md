@@ -28,7 +28,7 @@ A tool to search award seats on all transfer partners for a given set of loyalty
 
    This sets up the database connection URL. The default configuration works with the included Docker Compose setup:
    ```
-   DATABASE_URL=postgresql://flyarr:flyarr@localhost:5432/flyarr
+   DATABASE_URL=postgresql://flyarr:flyarr@localhost:5433/flyarr
    ```
 
 4. Start the PostgreSQL database:
