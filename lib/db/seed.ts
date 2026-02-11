@@ -60,7 +60,7 @@ async function seed() {
         allianceId: allianceMap.STAR,
         hasDynamicPricing: true,
         searchUrlTemplate:
-          "https://www.united.com/en/us/fsr/choose-flights?f={origin}&t={destination}&d={date}&tt=1&at=1&sc=7&px=1&taxng=1&newHP=True&clm=7",
+          "https://www.united.com/en/us/fsr/choose-flights?f={origin}&t={destination}&d={date}&tt=1&at=1&sc=7&px=1&taxng=1&newHP=True&clm=7&st=bestmatches&tqp=A",
       },
       {
         name: "ANA Mileage Club",
@@ -255,6 +255,7 @@ async function seed() {
         countryCode: airport.countryCode,
         lat: String(airport.lat),
         lng: String(airport.lng),
+        metro: airport.metro,
       })
       .onConflictDoNothing();
   }
