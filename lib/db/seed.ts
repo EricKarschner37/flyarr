@@ -107,6 +107,7 @@ async function seed() {
         code: "AVIOS_BA",
         allianceId: allianceMap.OW,
         hasDynamicPricing: false,
+        pricingModel: "distance",
         searchUrlTemplate:
           "https://www.britishairways.com/travel/redeem/execclub/_gf/en_us",
       },
@@ -131,6 +132,7 @@ async function seed() {
         code: "ALASKA",
         allianceId: allianceMap.OW, // Now part of OneWorld
         hasDynamicPricing: false,
+        pricingModel: "distance",
         searchUrlTemplate:
           "https://www.alaskaair.com/booking/flight-search",
       },
@@ -176,8 +178,26 @@ async function seed() {
         searchUrlTemplate:
           "https://www.emirates.com/us/english/plan-and-book/redeem-miles/",
       },
+      {
+        name: "Southwest Rapid Rewards",
+        code: "SOUTHWEST",
+        allianceId: null,
+        hasDynamicPricing: true,
+        searchUrlTemplate:
+          "https://www.southwest.com/air/booking/",
+      },
     ])
     .onConflictDoNothing();
+
+  // Ensure distance-based programs have pricingModel set (handles re-seed when rows already exist)
+  await db
+    .update(schema.airlinePrograms)
+    .set({ pricingModel: "distance" })
+    .where(eq(schema.airlinePrograms.code, "ALASKA"));
+  await db
+    .update(schema.airlinePrograms)
+    .set({ pricingModel: "distance" })
+    .where(eq(schema.airlinePrograms.code, "AVIOS_BA"));
 
   const airlinePrograms = await db.select().from(schema.airlinePrograms);
   const airlineMap = Object.fromEntries(
@@ -204,6 +224,7 @@ async function seed() {
     { cc: "CHASE_UR", airline: "KRISFLYER", ratio: "1.0", hours: 0 },
     { cc: "CHASE_UR", airline: "KOREAN", ratio: "1.0", hours: 0 },
     { cc: "CHASE_UR", airline: "AADVANTAGE", ratio: "1.0", hours: 24 },
+    { cc: "CHASE_UR", airline: "SOUTHWEST", ratio: "1.0", hours: 0 },
     // Citi TY transfers
     { cc: "CITI_TY", airline: "LIFEMILES", ratio: "1.0", hours: 0 },
     { cc: "CITI_TY", airline: "FLYING_BLUE", ratio: "1.0", hours: 0 },
@@ -620,6 +641,7 @@ async function seed() {
         "PHX",
         "LAS",
         "HNL",
+        "MSY",
       ],
       region: "US",
     },
@@ -814,6 +836,7 @@ async function seed() {
         "LAS",
         "CLT",
         "PHL",
+        "MSY",
       ],
       region: "US",
     },
@@ -957,6 +980,7 @@ async function seed() {
         "MSP",
         "DTW",
         "SLC",
+        "MSY",
       ],
       region: "US",
     },
@@ -1058,350 +1082,132 @@ async function seed() {
     }
   }
 
-  // Add Alaska Mileage Plan domestic charts (distance-based, fixed pricing)
+  // Add Alaska Mileage Plan charts (distance-based, fixed pricing)
+  // No regions or airport mappings needed — distance is calculated at search time
   const alaskaId = airlineMap.ALASKA;
-  const alaskaRegions = [
-    { programId: alaskaId, name: "Short Haul (under 700mi)", code: "SHORT" },
-    { programId: alaskaId, name: "Medium Haul (700-1400mi)", code: "MEDIUM" },
-    { programId: alaskaId, name: "Long Haul (1400-2100mi)", code: "LONG" },
-    { programId: alaskaId, name: "Transcontinental (2100+mi)", code: "TRANSCON" },
-    { programId: alaskaId, name: "Hawaii", code: "HAWAII" },
+
+  const alaskaDistanceCharts: Array<{
+    minDist: number;
+    maxDist: number | null;
+    cabin: string;
+    miles: number;
+    partnerType: string;
+    notes: string;
+  }> = [
+    // 0–700 mi partner
+    { minDist: 0, maxDist: 700, cabin: "economy", miles: 4500, partnerType: "partner", notes: "Partner chart – under 700mi" },
+    { minDist: 0, maxDist: 700, cabin: "premium_economy", miles: 6000, partnerType: "partner", notes: "Partner chart – under 700mi" },
+    { minDist: 0, maxDist: 700, cabin: "business", miles: 9000, partnerType: "partner", notes: "Partner chart – under 700mi" },
+    { minDist: 0, maxDist: 700, cabin: "first", miles: 13500, partnerType: "partner", notes: "Partner chart – under 700mi" },
+    // 0–700 mi own metal
+    { minDist: 0, maxDist: 700, cabin: "economy", miles: 5000, partnerType: "own_metal", notes: "Alaska metal – under 700mi" },
+    { minDist: 0, maxDist: 700, cabin: "first", miles: 15000, partnerType: "own_metal", notes: "Alaska metal – under 700mi" },
+    // 701–1,400 mi partner
+    { minDist: 701, maxDist: 1400, cabin: "economy", miles: 7500, partnerType: "partner", notes: "Partner chart – 701-1,400mi" },
+    { minDist: 701, maxDist: 1400, cabin: "premium_economy", miles: 10000, partnerType: "partner", notes: "Partner chart – 701-1,400mi" },
+    { minDist: 701, maxDist: 1400, cabin: "business", miles: 15000, partnerType: "partner", notes: "Partner chart – 701-1,400mi" },
+    { minDist: 701, maxDist: 1400, cabin: "first", miles: 25000, partnerType: "partner", notes: "Partner chart – 701-1,400mi" },
+    // 701–1,400 mi own metal
+    { minDist: 701, maxDist: 1400, cabin: "economy", miles: 7500, partnerType: "own_metal", notes: "Alaska metal – 701-1,400mi" },
+    { minDist: 701, maxDist: 1400, cabin: "first", miles: 25000, partnerType: "own_metal", notes: "Alaska metal – 701-1,400mi" },
+    // 1,401–2,100 mi partner
+    { minDist: 1401, maxDist: 2100, cabin: "economy", miles: 12500, partnerType: "partner", notes: "Partner chart – 1,401-2,100mi" },
+    { minDist: 1401, maxDist: 2100, cabin: "premium_economy", miles: 17500, partnerType: "partner", notes: "Partner chart – 1,401-2,100mi" },
+    { minDist: 1401, maxDist: 2100, cabin: "business", miles: 25000, partnerType: "partner", notes: "Partner chart – 1,401-2,100mi" },
+    { minDist: 1401, maxDist: 2100, cabin: "first", miles: 40000, partnerType: "partner", notes: "Partner chart – 1,401-2,100mi" },
+    // 1,401–2,100 mi own metal
+    { minDist: 1401, maxDist: 2100, cabin: "economy", miles: 10000, partnerType: "own_metal", notes: "Alaska metal – 1,401-2,100mi" },
+    { minDist: 1401, maxDist: 2100, cabin: "first", miles: 25000, partnerType: "own_metal", notes: "Alaska metal – 1,401-2,100mi" },
+    // 2,101–4,000 mi partner
+    { minDist: 2101, maxDist: 4000, cabin: "economy", miles: 17500, partnerType: "partner", notes: "Partner chart – 2,101-4,000mi" },
+    { minDist: 2101, maxDist: 4000, cabin: "premium_economy", miles: 22500, partnerType: "partner", notes: "Partner chart – 2,101-4,000mi" },
+    { minDist: 2101, maxDist: 4000, cabin: "business", miles: 35000, partnerType: "partner", notes: "Partner chart – 2,101-4,000mi" },
+    { minDist: 2101, maxDist: 4000, cabin: "first", miles: 52500, partnerType: "partner", notes: "Partner chart – 2,101-4,000mi" },
+    // 4,001–6,000 mi partner
+    { minDist: 4001, maxDist: 6000, cabin: "economy", miles: 25000, partnerType: "partner", notes: "Partner chart – 4,001-6,000mi" },
+    { minDist: 4001, maxDist: 6000, cabin: "premium_economy", miles: 32500, partnerType: "partner", notes: "Partner chart – 4,001-6,000mi" },
+    { minDist: 4001, maxDist: 6000, cabin: "business", miles: 50000, partnerType: "partner", notes: "Partner chart – 4,001-6,000mi" },
+    { minDist: 4001, maxDist: 6000, cabin: "first", miles: 75000, partnerType: "partner", notes: "Partner chart – 4,001-6,000mi" },
+    // 6,001+ mi partner
+    { minDist: 6001, maxDist: null, cabin: "economy", miles: 30000, partnerType: "partner", notes: "Partner chart – 6,001+ mi" },
+    { minDist: 6001, maxDist: null, cabin: "premium_economy", miles: 40000, partnerType: "partner", notes: "Partner chart – 6,001+ mi" },
+    { minDist: 6001, maxDist: null, cabin: "business", miles: 60000, partnerType: "partner", notes: "Partner chart – 6,001+ mi" },
+    { minDist: 6001, maxDist: null, cabin: "first", miles: 90000, partnerType: "partner", notes: "Partner chart – 6,001+ mi" },
   ];
 
-  for (const region of alaskaRegions) {
-    await db.insert(schema.regions).values(region).onConflictDoNothing();
+  for (const chart of alaskaDistanceCharts) {
+    await db
+      .insert(schema.awardCharts)
+      .values({
+        programId: alaskaId,
+        originRegionId: null,
+        destinationRegionId: null,
+        minDistanceMi: chart.minDist,
+        maxDistanceMi: chart.maxDist,
+        cabinClass: chart.cabin,
+        partnerType: chart.partnerType,
+        minMiles: chart.miles,
+        maxMiles: chart.miles,
+        typicalMiles: chart.miles,
+        isOneWay: true,
+        notes: chart.notes,
+      })
+      .onConflictDoNothing();
   }
 
-  const alaskaRegionsDb = await db
-    .select()
-    .from(schema.regions)
-    .where(eq(schema.regions.programId, alaskaId));
-  const alaskaRegionMap = Object.fromEntries(
-    alaskaRegionsDb.map((r) => [r.code, r.id])
-  );
-
-  // Alaska uses distance-based pricing, so we map airports to distance bands
-  // For simplicity, we'll categorize common routes
-  const alaskaMappings = [
-    // Short haul examples (SEA-PDX, LAX-SFO, etc.)
-    { airports: ["SEA", "PDX", "SFO", "SJC", "OAK"], region: "SHORT" },
-    // Medium haul (SEA-LAX, SFO-PHX, etc.)
-    { airports: ["LAX", "PHX", "DEN", "SLC"], region: "MEDIUM" },
-    // Long haul (SEA-DFW, LAX-ORD, etc.)
-    { airports: ["DFW", "ORD", "MSP", "ATL"], region: "LONG" },
-    // Transcontinental (SEA-JFK, LAX-BOS, etc.)
-    { airports: ["JFK", "EWR", "BOS", "IAD", "MIA"], region: "TRANSCON" },
-    { airports: ["HNL", "OGG", "KOA", "LIH"], region: "HAWAII" },
-  ];
-
-  for (const mapping of alaskaMappings) {
-    const regionId = alaskaRegionMap[mapping.region];
-    if (regionId) {
-      for (const airportCode of mapping.airports) {
-        await db
-          .insert(schema.airportRegionMappings)
-          .values({
-            airportCode,
-            regionId,
-            programId: alaskaId,
-          })
-          .onConflictDoNothing();
-      }
-    }
-  }
-
-  // Alaska charts (distance-based fixed pricing)
-  const alaskaCharts = [
-    // Short haul
-    {
-      from: "SHORT",
-      to: "SHORT",
-      cabin: "economy",
-      min: 4500,
-      max: 4500,
-      typical: 4500,
-      notes: "Fixed - under 700 miles",
-    },
-    {
-      from: "SHORT",
-      to: "SHORT",
-      cabin: "first",
-      min: 13500,
-      max: 13500,
-      typical: 13500,
-      notes: "Fixed - under 700 miles",
-    },
-    // Medium haul
-    {
-      from: "SHORT",
-      to: "MEDIUM",
-      cabin: "economy",
-      min: 7500,
-      max: 7500,
-      typical: 7500,
-      notes: "Fixed - 700-1400 miles",
-    },
-    {
-      from: "SHORT",
-      to: "MEDIUM",
-      cabin: "first",
-      min: 22500,
-      max: 22500,
-      typical: 22500,
-      notes: "Fixed - 700-1400 miles",
-    },
-    // Long haul
-    {
-      from: "SHORT",
-      to: "LONG",
-      cabin: "economy",
-      min: 12500,
-      max: 12500,
-      typical: 12500,
-      notes: "Fixed - 1400-2100 miles",
-    },
-    {
-      from: "SHORT",
-      to: "LONG",
-      cabin: "first",
-      min: 37500,
-      max: 37500,
-      typical: 37500,
-      notes: "Fixed - 1400-2100 miles",
-    },
-    // Transcontinental
-    {
-      from: "SHORT",
-      to: "TRANSCON",
-      cabin: "economy",
-      min: 17500,
-      max: 17500,
-      typical: 17500,
-      notes: "Fixed - 2100+ miles",
-    },
-    {
-      from: "SHORT",
-      to: "TRANSCON",
-      cabin: "first",
-      min: 52500,
-      max: 52500,
-      typical: 52500,
-      notes: "Fixed - 2100+ miles",
-    },
-    // Hawaii
-    {
-      from: "SHORT",
-      to: "HAWAII",
-      cabin: "economy",
-      min: 17500,
-      max: 17500,
-      typical: 17500,
-      notes: "Fixed pricing",
-    },
-    {
-      from: "SHORT",
-      to: "HAWAII",
-      cabin: "first",
-      min: 52500,
-      max: 52500,
-      typical: 52500,
-      notes: "Fixed pricing",
-    },
-  ];
-
-  for (const chart of alaskaCharts) {
-    const originId = alaskaRegionMap[chart.from];
-    const destId = alaskaRegionMap[chart.to];
-    if (originId && destId) {
-      await db
-        .insert(schema.awardCharts)
-        .values({
-          programId: alaskaId,
-          originRegionId: originId,
-          destinationRegionId: destId,
-          cabinClass: chart.cabin,
-          partnerType: "any",
-          minMiles: chart.min,
-          maxMiles: chart.max,
-          typicalMiles: chart.typical,
-          isOneWay: true,
-          notes: chart.notes,
-        })
-        .onConflictDoNothing();
-    }
-  }
-
-  // Add British Airways Avios domestic US charts (for AA flights)
+  // Add British Airways Avios charts (distance-based, fixed pricing)
+  // No regions or airport mappings needed — distance is calculated at search time
   const aviosId = airlineMap.AVIOS_BA;
-  const aviosRegions = [
-    { programId: aviosId, name: "Short Haul (under 650mi)", code: "SHORT" },
-    { programId: aviosId, name: "Zone 2 (651-1150mi)", code: "ZONE2" },
-    { programId: aviosId, name: "Zone 3 (1151-2000mi)", code: "ZONE3" },
-    { programId: aviosId, name: "Zone 4 (2001-3000mi)", code: "ZONE4" },
-    { programId: aviosId, name: "Europe", code: "EUROPE" },
+
+  const aviosDistanceCharts: Array<{
+    minDist: number;
+    maxDist: number | null;
+    cabin: string;
+    miles: number;
+    partnerType: string;
+    notes: string;
+  }> = [
+    // Under 650 mi (partner on AA)
+    { minDist: 0, maxDist: 650, cabin: "economy", miles: 13500, partnerType: "partner", notes: "Fixed – under 650mi on AA" },
+    { minDist: 0, maxDist: 650, cabin: "business", miles: 27000, partnerType: "partner", notes: "Fixed – under 650mi on AA" },
+    // 651–1,150 mi
+    { minDist: 651, maxDist: 1150, cabin: "economy", miles: 18000, partnerType: "partner", notes: "Fixed – 651-1,150mi on AA" },
+    { minDist: 651, maxDist: 1150, cabin: "business", miles: 36000, partnerType: "partner", notes: "Fixed – 651-1,150mi on AA" },
+    // 1,151–2,000 mi
+    { minDist: 1151, maxDist: 2000, cabin: "economy", miles: 20500, partnerType: "partner", notes: "Fixed – 1,151-2,000mi on AA" },
+    { minDist: 1151, maxDist: 2000, cabin: "business", miles: 45500, partnerType: "partner", notes: "Fixed – 1,151-2,000mi on AA" },
+    // 2,001–3,000 mi (transcontinental)
+    { minDist: 2001, maxDist: 3000, cabin: "economy", miles: 22500, partnerType: "partner", notes: "Fixed – 2,001-3,000mi on AA" },
+    { minDist: 2001, maxDist: 3000, cabin: "business", miles: 56500, partnerType: "partner", notes: "Fixed – 2,001-3,000mi on AA" },
+    // 3,001–4,000 mi (transatlantic)
+    { minDist: 3001, maxDist: 4000, cabin: "economy", miles: 26000, partnerType: "partner", notes: "Fixed – 3,001-4,000mi" },
+    { minDist: 3001, maxDist: 4000, cabin: "business", miles: 52000, partnerType: "partner", notes: "Fixed – 3,001-4,000mi" },
+    // 4,001–5,500 mi
+    { minDist: 4001, maxDist: 5500, cabin: "economy", miles: 34750, partnerType: "partner", notes: "Fixed – 4,001-5,500mi" },
+    { minDist: 4001, maxDist: 5500, cabin: "business", miles: 68750, partnerType: "partner", notes: "Fixed – 4,001-5,500mi" },
+    // 5,501+ mi
+    { minDist: 5501, maxDist: null, cabin: "economy", miles: 51500, partnerType: "partner", notes: "Fixed – 5,501+ mi" },
+    { minDist: 5501, maxDist: null, cabin: "business", miles: 103000, partnerType: "partner", notes: "Fixed – 5,501+ mi" },
   ];
 
-  for (const region of aviosRegions) {
-    await db.insert(schema.regions).values(region).onConflictDoNothing();
-  }
-
-  const aviosRegionsDb = await db
-    .select()
-    .from(schema.regions)
-    .where(eq(schema.regions.programId, aviosId));
-  const aviosRegionMap = Object.fromEntries(
-    aviosRegionsDb.map((r) => [r.code, r.id])
-  );
-
-  // Avios uses distance-based pricing for AA/Alaska flights
-  const aviosMappings = [
-    // Short haul examples
-    { airports: ["DCA", "PHL", "BOS", "JFK", "EWR"], region: "SHORT" },
-    // Zone 2
-    { airports: ["CLT", "ATL", "ORD", "DTW"], region: "ZONE2" },
-    // Zone 3
-    { airports: ["DFW", "MIA", "DEN", "MSP"], region: "ZONE3" },
-    // Zone 4 (transcontinental)
-    { airports: ["LAX", "SFO", "SEA", "PHX", "LAS"], region: "ZONE4" },
-    // Europe
-    { airports: ["LHR", "LGW", "CDG", "MAD", "BCN", "DUB"], region: "EUROPE" },
-  ];
-
-  for (const mapping of aviosMappings) {
-    const regionId = aviosRegionMap[mapping.region];
-    if (regionId) {
-      for (const airportCode of mapping.airports) {
-        await db
-          .insert(schema.airportRegionMappings)
-          .values({
-            airportCode,
-            regionId,
-            programId: aviosId,
-          })
-          .onConflictDoNothing();
-      }
-    }
-  }
-
-  // Avios charts (distance-based fixed pricing for AA flights - post Dec 2025)
-  const aviosCharts = [
-    // Short haul (under 650 miles)
-    {
-      from: "SHORT",
-      to: "SHORT",
-      cabin: "economy",
-      min: 13500,
-      max: 13500,
-      typical: 13500,
-      notes: "Fixed - under 650 miles on AA",
-    },
-    {
-      from: "SHORT",
-      to: "SHORT",
-      cabin: "business",
-      min: 27000,
-      max: 27000,
-      typical: 27000,
-      notes: "Fixed - under 650 miles on AA",
-    },
-    // Zone 2 (651-1150 miles)
-    {
-      from: "SHORT",
-      to: "ZONE2",
-      cabin: "economy",
-      min: 18000,
-      max: 18000,
-      typical: 18000,
-      notes: "Fixed - 651-1150 miles on AA",
-    },
-    {
-      from: "SHORT",
-      to: "ZONE2",
-      cabin: "business",
-      min: 36000,
-      max: 36000,
-      typical: 36000,
-      notes: "Fixed - 651-1150 miles on AA",
-    },
-    // Zone 3 (1151-2000 miles)
-    {
-      from: "SHORT",
-      to: "ZONE3",
-      cabin: "economy",
-      min: 20500,
-      max: 20500,
-      typical: 20500,
-      notes: "Fixed - 1151-2000 miles on AA",
-    },
-    {
-      from: "SHORT",
-      to: "ZONE3",
-      cabin: "business",
-      min: 45500,
-      max: 45500,
-      typical: 45500,
-      notes: "Fixed - 1151-2000 miles on AA",
-    },
-    // Zone 4 (2001-3000 miles - transcontinental)
-    {
-      from: "SHORT",
-      to: "ZONE4",
-      cabin: "economy",
-      min: 22500,
-      max: 22500,
-      typical: 22500,
-      notes: "Fixed - 2001-3000 miles on AA",
-    },
-    {
-      from: "SHORT",
-      to: "ZONE4",
-      cabin: "business",
-      min: 56500,
-      max: 56500,
-      typical: 56500,
-      notes: "Fixed - 2001-3000 miles on AA",
-    },
-    // Europe
-    {
-      from: "SHORT",
-      to: "EUROPE",
-      cabin: "economy",
-      min: 26000,
-      max: 26000,
-      typical: 26000,
-      notes: "Fixed pricing",
-    },
-    {
-      from: "SHORT",
-      to: "EUROPE",
-      cabin: "business",
-      min: 52000,
-      max: 52000,
-      typical: 52000,
-      notes: "Fixed pricing",
-    },
-  ];
-
-  for (const chart of aviosCharts) {
-    const originId = aviosRegionMap[chart.from];
-    const destId = aviosRegionMap[chart.to];
-    if (originId && destId) {
-      await db
-        .insert(schema.awardCharts)
-        .values({
-          programId: aviosId,
-          originRegionId: originId,
-          destinationRegionId: destId,
-          cabinClass: chart.cabin,
-          partnerType: "partner",
-          minMiles: chart.min,
-          maxMiles: chart.max,
-          typicalMiles: chart.typical,
-          isOneWay: true,
-          notes: chart.notes,
-        })
-        .onConflictDoNothing();
-    }
+  for (const chart of aviosDistanceCharts) {
+    await db
+      .insert(schema.awardCharts)
+      .values({
+        programId: aviosId,
+        originRegionId: null,
+        destinationRegionId: null,
+        minDistanceMi: chart.minDist,
+        maxDistanceMi: chart.maxDist,
+        cabinClass: chart.cabin,
+        partnerType: chart.partnerType,
+        minMiles: chart.miles,
+        maxMiles: chart.miles,
+        typicalMiles: chart.miles,
+        isOneWay: true,
+        notes: chart.notes,
+      })
+      .onConflictDoNothing();
   }
 
   // Seed Airline Routes (which airport pairs each airline operates)
@@ -1479,6 +1285,14 @@ async function seed() {
     { from: "SFO", to: "HNL" },
     { from: "LAX", to: "HNL" },
     { from: "DEN", to: "HNL" },
+    // MSY (New Orleans) routes
+    { from: "IAH", to: "MSY" },
+    { from: "DEN", to: "MSY" },
+    { from: "ORD", to: "MSY" },
+    { from: "EWR", to: "MSY" },
+    // NYC - DC routes
+    { from: "EWR", to: "IAD" },
+    { from: "EWR", to: "DCA" },
   ];
   await addRoutes(unitedId, unitedRoutes);
 
@@ -1557,6 +1371,15 @@ async function seed() {
     // PHX routes
     { from: "PHX", to: "JFK" },
     { from: "PHX", to: "DFW" },
+    // MSY (New Orleans) routes
+    { from: "DFW", to: "MSY" },
+    { from: "CLT", to: "MSY" },
+    { from: "MIA", to: "MSY" },
+    { from: "PHX", to: "MSY" },
+    { from: "ORD", to: "MSY" },
+    // NYC - DC routes (AA Shuttle)
+    { from: "JFK", to: "DCA" },
+    { from: "LGA", to: "DCA" },
   ];
   await addRoutes(aaId, aaRoutes);
 
@@ -1603,6 +1426,15 @@ async function seed() {
     { from: "DEN", to: "ATL" },
     { from: "DEN", to: "MSP" },
     { from: "DEN", to: "JFK" },
+    // MSY (New Orleans) routes
+    { from: "ATL", to: "MSY" },
+    { from: "MSP", to: "MSY" },
+    { from: "DTW", to: "MSY" },
+    { from: "JFK", to: "MSY" },
+    { from: "LAX", to: "MSY" },
+    // NYC - DC routes (Delta Shuttle)
+    { from: "LGA", to: "DCA" },
+    { from: "JFK", to: "DCA" },
   ];
   await addRoutes(deltaId, deltaRoutes);
 
@@ -2281,6 +2113,193 @@ async function seed() {
     { from: "BOG", to: "CDG" },
   ];
   if (lifemilesId) await addRoutes(lifemilesId, lifemilesRoutes);
+
+  // Southwest Rapid Rewards (domestic US, point-based pricing)
+  const southwestId = airlineMap.SOUTHWEST;
+  if (southwestId) {
+    const southwestRegions = [
+      { programId: southwestId, name: "Domestic US", code: "US" },
+      { programId: southwestId, name: "Hawaii", code: "HAWAII" },
+      { programId: southwestId, name: "Mexico/Caribbean", code: "MEX_CARIB" },
+    ];
+
+    for (const region of southwestRegions) {
+      await db.insert(schema.regions).values(region).onConflictDoNothing();
+    }
+
+    const southwestRegionsDb = await db
+      .select()
+      .from(schema.regions)
+      .where(eq(schema.regions.programId, southwestId));
+    const southwestRegionMap = Object.fromEntries(
+      southwestRegionsDb.map((r) => [r.code, r.id])
+    );
+
+    // Southwest airport mappings
+    const southwestMappings = [
+      {
+        airports: [
+          "LAX",
+          "SFO",
+          "OAK",
+          "SJC",
+          "ORD",
+          "MDW",
+          "DEN",
+          "PHX",
+          "LAS",
+          "DAL",
+          "HOU",
+          "ATL",
+          "BWI",
+          "BOS",
+          "MSY",
+          "MCO",
+          "TPA",
+          "FLL",
+          "SAN",
+          "SEA",
+          "PDX",
+          "AUS",
+          "BNA",
+          "STL",
+          "MCI",
+          "SMF",
+          "RDU",
+          "CLE",
+          "PIT",
+          "IND",
+          "CMH",
+          "ABQ",
+          "ONT",
+          "BUR",
+          "SNA",
+        ],
+        region: "US",
+      },
+      { airports: ["HNL", "OGG", "KOA", "LIH"], region: "HAWAII" },
+      { airports: ["CUN", "MEX"], region: "MEX_CARIB" },
+    ];
+
+    for (const mapping of southwestMappings) {
+      const regionId = southwestRegionMap[mapping.region];
+      if (regionId) {
+        for (const airportCode of mapping.airports) {
+          await db
+            .insert(schema.airportRegionMappings)
+            .values({
+              airportCode,
+              regionId,
+              programId: southwestId,
+            })
+            .onConflictDoNothing();
+        }
+      }
+    }
+
+    // Southwest award charts (point-based, varies by fare class)
+    const southwestCharts = [
+      {
+        from: "US",
+        to: "US",
+        cabin: "economy",
+        min: 5000,
+        max: 50000,
+        typical: 12000,
+        notes: "Wanna Get Away to Business Select - varies by demand",
+      },
+      {
+        from: "US",
+        to: "HAWAII",
+        cabin: "economy",
+        min: 15000,
+        max: 60000,
+        typical: 25000,
+        notes: "Wanna Get Away to Business Select",
+      },
+      {
+        from: "US",
+        to: "MEX_CARIB",
+        cabin: "economy",
+        min: 8000,
+        max: 40000,
+        typical: 15000,
+        notes: "International routes",
+      },
+    ];
+
+    for (const chart of southwestCharts) {
+      const originId = southwestRegionMap[chart.from];
+      const destId = southwestRegionMap[chart.to];
+      if (originId && destId) {
+        await db
+          .insert(schema.awardCharts)
+          .values({
+            programId: southwestId,
+            originRegionId: originId,
+            destinationRegionId: destId,
+            cabinClass: chart.cabin,
+            partnerType: "own_metal",
+            minMiles: chart.min,
+            maxMiles: chart.max,
+            typicalMiles: chart.typical,
+            isOneWay: true,
+            notes: chart.notes,
+          })
+          .onConflictDoNothing();
+      }
+    }
+
+    // Southwest routes (major focus cities, including MSY)
+    const southwestRoutes = [
+      // MSY (New Orleans) - Southwest's largest presence
+      { from: "MSY", to: "DAL" },
+      { from: "MSY", to: "HOU" },
+      { from: "MSY", to: "ATL" },
+      { from: "MSY", to: "DEN" },
+      { from: "MSY", to: "MDW" },
+      { from: "MSY", to: "BWI" },
+      { from: "MSY", to: "PHX" },
+      { from: "MSY", to: "LAS" },
+      { from: "MSY", to: "LAX" },
+      { from: "MSY", to: "MCO" },
+      { from: "MSY", to: "TPA" },
+      { from: "MSY", to: "FLL" },
+      { from: "MSY", to: "BNA" },
+      // Other major routes
+      { from: "DAL", to: "HOU" },
+      { from: "DAL", to: "DEN" },
+      { from: "DAL", to: "PHX" },
+      { from: "DAL", to: "LAS" },
+      { from: "DAL", to: "LAX" },
+      { from: "MDW", to: "DEN" },
+      { from: "MDW", to: "PHX" },
+      { from: "MDW", to: "LAS" },
+      { from: "MDW", to: "LAX" },
+      { from: "MDW", to: "MCO" },
+      { from: "BWI", to: "MCO" },
+      { from: "BWI", to: "TPA" },
+      { from: "BWI", to: "FLL" },
+      { from: "DEN", to: "PHX" },
+      { from: "DEN", to: "LAS" },
+      { from: "DEN", to: "LAX" },
+      { from: "DEN", to: "SFO" },
+      { from: "PHX", to: "LAX" },
+      { from: "PHX", to: "SFO" },
+      { from: "PHX", to: "SEA" },
+      { from: "LAS", to: "LAX" },
+      { from: "LAS", to: "SFO" },
+      { from: "LAS", to: "SEA" },
+      // Hawaii routes
+      { from: "OAK", to: "HNL" },
+      { from: "OAK", to: "OGG" },
+      { from: "SJC", to: "HNL" },
+      { from: "LAX", to: "HNL" },
+      { from: "PHX", to: "HNL" },
+      { from: "LAS", to: "HNL" },
+    ];
+    await addRoutes(southwestId, southwestRoutes);
+  }
 
   console.log("Seeding complete!");
   await client.end();

@@ -175,11 +175,11 @@ export const awardCharts = pgTable(
       .notNull()
       .references(() => airlinePrograms.id, { onDelete: "cascade" }),
     originRegionId: integer("origin_region_id")
-      .notNull()
       .references(() => regions.id, { onDelete: "cascade" }),
     destinationRegionId: integer("destination_region_id")
-      .notNull()
       .references(() => regions.id, { onDelete: "cascade" }),
+    minDistanceMi: integer("min_distance_mi"), // lower bound of distance band (for distance-based programs)
+    maxDistanceMi: integer("max_distance_mi"), // upper bound of distance band (null = unlimited)
     cabinClass: varchar("cabin_class", { length: 20 }).notNull(), // economy, premium_economy, business, first
     partnerType: varchar("partner_type", { length: 20 }).notNull().default("any"), // own_metal, partner, any
     minMiles: integer("min_miles").notNull(),
@@ -195,6 +195,11 @@ export const awardCharts = pgTable(
     index("idx_award_chart_route").on(
       table.originRegionId,
       table.destinationRegionId
+    ),
+    index("idx_award_chart_distance").on(
+      table.programId,
+      table.minDistanceMi,
+      table.maxDistanceMi
     ),
     index("idx_award_chart_cabin").on(table.cabinClass),
   ]

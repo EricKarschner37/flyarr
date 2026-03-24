@@ -10,7 +10,7 @@ import {
   alliances,
   airlineRoutes,
 } from "@/lib/db/schema";
-import { eq, and, inArray } from "drizzle-orm";
+import { eq, and, inArray, isNull, lte, gte, or } from "drizzle-orm";
 
 export type CabinClass = "economy" | "premium_economy" | "business" | "first";
 
@@ -90,6 +90,107 @@ async function hasRouteAvailability(
   return routeExists.length > 0;
 }
 
+// Calculate great-circle distance between two points using the haversine formula
+function haversineDistanceMi(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number
+): number {
+  const R = 3958.8; // Earth radius in miles
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// Build transfer options for a given program and chart cost
+async function getTransferOptions(
+  programId: number,
+  minMiles: number,
+  enabledCreditCardPrograms: string[]
+): Promise<AwardResult["transferOptions"]> {
+  if (enabledCreditCardPrograms.length === 0) return [];
+
+  const ccPrograms = await db
+    .select()
+    .from(creditCardPrograms)
+    .where(inArray(creditCardPrograms.code, enabledCreditCardPrograms));
+
+  const ccIds = ccPrograms.map((p) => p.id);
+  if (ccIds.length === 0) return [];
+
+  const transfers = await db
+    .select({
+      ccId: creditCardPrograms.id,
+      ccName: creditCardPrograms.name,
+      ccCode: creditCardPrograms.code,
+      transferRatio: transferPartnerships.transferRatio,
+      transferTimeHours: transferPartnerships.transferTimeHours,
+      isBonusActive: transferPartnerships.isBonusActive,
+      bonusRatio: transferPartnerships.bonusRatio,
+    })
+    .from(transferPartnerships)
+    .innerJoin(
+      creditCardPrograms,
+      eq(transferPartnerships.creditCardProgramId, creditCardPrograms.id)
+    )
+    .where(
+      and(
+        eq(transferPartnerships.airlineProgramId, programId),
+        inArray(transferPartnerships.creditCardProgramId, ccIds)
+      )
+    );
+
+  return transfers.map((t) => {
+    const ratio = parseFloat(t.transferRatio || "1");
+    const effectiveRatio =
+      t.isBonusActive && t.bonusRatio ? parseFloat(t.bonusRatio) : ratio;
+    const pointsNeeded = Math.ceil(minMiles / effectiveRatio);
+
+    return {
+      creditCardProgram: {
+        id: t.ccId,
+        name: t.ccName,
+        code: t.ccCode,
+      },
+      transferRatio: ratio,
+      transferTimeHours: t.transferTimeHours,
+      pointsNeeded,
+      isBonusActive: t.isBonusActive,
+      bonusRatio: t.bonusRatio ? parseFloat(t.bonusRatio) : null,
+    };
+  });
+}
+
+// Generate a search URL from the template
+function buildSearchUrl(
+  template: string | null,
+  originCode: string,
+  destinationCode: string
+): string | null {
+  if (!template) return null;
+  const today = new Date();
+  const futureDate = new Date(today);
+  futureDate.setDate(today.getDate() + 30);
+  const dateStr = futureDate.toISOString().split("T")[0];
+  return template
+    .replace("{origin}", originCode)
+    .replace("{destination}", destinationCode)
+    .replace("{date}", dateStr);
+}
+
+// Format a distance band label for display (e.g., "0–700 mi")
+function distanceBandLabel(minDist: number | null, maxDist: number | null): string {
+  if (minDist == null && maxDist == null) return "Any distance";
+  if (maxDist == null) return `${minDist!.toLocaleString()}+ mi`;
+  if (minDist == null || minDist === 0) return `Under ${maxDist.toLocaleString()} mi`;
+  return `${minDist.toLocaleString()}–${maxDist.toLocaleString()} mi`;
+}
+
 export async function findAwards(params: SearchParams): Promise<AwardResult[]> {
   const { origin, destination, cabinClass, enabledCreditCardPrograms } = params;
 
@@ -97,12 +198,11 @@ export async function findAwards(params: SearchParams): Promise<AwardResult[]> {
   const originCodes = await resolveAirportCodes(origin);
   const destinationCodes = await resolveAirportCodes(destination);
 
-  // If we couldn't resolve any codes, return empty
   if (originCodes.length === 0 || destinationCodes.length === 0) {
     return [];
   }
 
-  // Get all airline programs with their regions and mappings
+  // Get all airline programs
   const programs = await db
     .select({
       programId: airlinePrograms.id,
@@ -120,164 +220,191 @@ export async function findAwards(params: SearchParams): Promise<AwardResult[]> {
   const results: AwardResult[] = [];
 
   for (const program of programs) {
-    // Find origin region for this program (use any of the resolved airport codes)
-    const originMapping = await db
-      .select({
-        regionId: airportRegionMappings.regionId,
-        regionName: regions.name,
-      })
-      .from(airportRegionMappings)
-      .innerJoin(regions, eq(airportRegionMappings.regionId, regions.id))
-      .where(
-        and(
-          inArray(airportRegionMappings.airportCode, originCodes),
-          eq(airportRegionMappings.programId, program.programId)
-        )
-      )
-      .limit(1);
-
-    if (originMapping.length === 0) continue;
-
-    // Find destination region for this program (use any of the resolved airport codes)
-    const destMapping = await db
-      .select({
-        regionId: airportRegionMappings.regionId,
-        regionName: regions.name,
-      })
-      .from(airportRegionMappings)
-      .innerJoin(regions, eq(airportRegionMappings.regionId, regions.id))
-      .where(
-        and(
-          inArray(airportRegionMappings.airportCode, destinationCodes),
-          eq(airportRegionMappings.programId, program.programId)
-        )
-      )
-      .limit(1);
-
-    if (destMapping.length === 0) continue;
-
-    // Look up award chart
-    const chartEntry = await db
-      .select()
-      .from(awardCharts)
-      .where(
-        and(
-          eq(awardCharts.programId, program.programId),
-          eq(awardCharts.originRegionId, originMapping[0].regionId),
-          eq(awardCharts.destinationRegionId, destMapping[0].regionId),
-          eq(awardCharts.cabinClass, cabinClass)
-        )
-      )
-      .limit(1);
-
-    if (chartEntry.length === 0) continue;
-
-    const chart = chartEntry[0];
-
-    // Check if there's a route available (own metal or alliance partner)
-    const routeAvailable = await hasRouteAvailability(
-      program.programId,
-      program.allianceId,
-      chart.partnerType,
-      originCodes,
-      destinationCodes
+    const searchUrl = buildSearchUrl(
+      program.searchUrlTemplate,
+      originCodes[0],
+      destinationCodes[0]
     );
 
-    if (!routeAvailable) continue;
+    if (program.pricingModel === "distance") {
+      // ── Distance-based program (Alaska, BA Avios, etc.) ──
+      // Get coordinates for one airport from each group
+      const originAirport = await db
+        .select({ lat: airports.lat, lng: airports.lng })
+        .from(airports)
+        .where(inArray(airports.code, originCodes))
+        .limit(1);
+      const destAirport = await db
+        .select({ lat: airports.lat, lng: airports.lng })
+        .from(airports)
+        .where(inArray(airports.code, destinationCodes))
+        .limit(1);
 
-    // Get transfer options from enabled credit card programs
-    let transferOptions: AwardResult["transferOptions"] = [];
+      if (
+        originAirport.length === 0 ||
+        destAirport.length === 0 ||
+        !originAirport[0].lat ||
+        !originAirport[0].lng ||
+        !destAirport[0].lat ||
+        !destAirport[0].lng
+      )
+        continue;
 
-    if (enabledCreditCardPrograms.length > 0) {
-      // First get the credit card program IDs
-      const ccPrograms = await db
+      const distanceMi = haversineDistanceMi(
+        parseFloat(originAirport[0].lat),
+        parseFloat(originAirport[0].lng),
+        parseFloat(destAirport[0].lat),
+        parseFloat(destAirport[0].lng)
+      );
+
+      // Query award charts where distance falls within [minDistanceMi, maxDistanceMi]
+      const chartEntries = await db
         .select()
-        .from(creditCardPrograms)
-        .where(inArray(creditCardPrograms.code, enabledCreditCardPrograms));
-
-      const ccIds = ccPrograms.map((p) => p.id);
-
-      if (ccIds.length > 0) {
-        const transfers = await db
-          .select({
-            ccId: creditCardPrograms.id,
-            ccName: creditCardPrograms.name,
-            ccCode: creditCardPrograms.code,
-            transferRatio: transferPartnerships.transferRatio,
-            transferTimeHours: transferPartnerships.transferTimeHours,
-            isBonusActive: transferPartnerships.isBonusActive,
-            bonusRatio: transferPartnerships.bonusRatio,
-          })
-          .from(transferPartnerships)
-          .innerJoin(
-            creditCardPrograms,
-            eq(transferPartnerships.creditCardProgramId, creditCardPrograms.id)
-          )
-          .where(
-            and(
-              eq(transferPartnerships.airlineProgramId, program.programId),
-              inArray(transferPartnerships.creditCardProgramId, ccIds)
+        .from(awardCharts)
+        .where(
+          and(
+            eq(awardCharts.programId, program.programId),
+            eq(awardCharts.cabinClass, cabinClass),
+            lte(awardCharts.minDistanceMi, Math.round(distanceMi)),
+            or(
+              isNull(awardCharts.maxDistanceMi),
+              gte(awardCharts.maxDistanceMi, Math.round(distanceMi))
             )
-          );
+          )
+        );
 
-        transferOptions = transfers.map((t) => {
-          const ratio = parseFloat(t.transferRatio || "1");
-          const effectiveRatio = t.isBonusActive && t.bonusRatio
-            ? parseFloat(t.bonusRatio)
-            : ratio;
-          const pointsNeeded = Math.ceil(chart.minMiles / effectiveRatio);
+      if (chartEntries.length === 0) continue;
 
-          return {
-            creditCardProgram: {
-              id: t.ccId,
-              name: t.ccName,
-              code: t.ccCode,
-            },
-            transferRatio: ratio,
-            transferTimeHours: t.transferTimeHours,
-            pointsNeeded,
-            isBonusActive: t.isBonusActive,
-            bonusRatio: t.bonusRatio ? parseFloat(t.bonusRatio) : null,
-          };
+      for (const chart of chartEntries) {
+        const routeAvailable = await hasRouteAvailability(
+          program.programId,
+          program.allianceId,
+          chart.partnerType,
+          originCodes,
+          destinationCodes
+        );
+        if (!routeAvailable) continue;
+
+        const transferOptions = await getTransferOptions(
+          program.programId,
+          chart.minMiles,
+          enabledCreditCardPrograms
+        );
+
+        const bandLabel = distanceBandLabel(chart.minDistanceMi, chart.maxDistanceMi);
+
+        results.push({
+          airlineProgram: {
+            id: program.programId,
+            name: program.programName,
+            code: program.programCode,
+            hasDynamicPricing: program.hasDynamicPricing,
+            pricingModel: program.pricingModel,
+            searchUrl,
+            alliance: program.allianceName,
+          },
+          awardCost: {
+            minMiles: chart.minMiles,
+            maxMiles: chart.maxMiles,
+            typicalMiles: chart.typicalMiles,
+            isOneWay: chart.isOneWay,
+            notes: chart.notes,
+          },
+          originRegion: bandLabel,
+          destinationRegion: bandLabel,
+          transferOptions,
+        });
+      }
+    } else {
+      // ── Region-based program ──
+      const originMapping = await db
+        .select({
+          regionId: airportRegionMappings.regionId,
+          regionName: regions.name,
+        })
+        .from(airportRegionMappings)
+        .innerJoin(regions, eq(airportRegionMappings.regionId, regions.id))
+        .where(
+          and(
+            inArray(airportRegionMappings.airportCode, originCodes),
+            eq(airportRegionMappings.programId, program.programId)
+          )
+        )
+        .limit(1);
+
+      if (originMapping.length === 0) continue;
+
+      const destMapping = await db
+        .select({
+          regionId: airportRegionMappings.regionId,
+          regionName: regions.name,
+        })
+        .from(airportRegionMappings)
+        .innerJoin(regions, eq(airportRegionMappings.regionId, regions.id))
+        .where(
+          and(
+            inArray(airportRegionMappings.airportCode, destinationCodes),
+            eq(airportRegionMappings.programId, program.programId)
+          )
+        )
+        .limit(1);
+
+      if (destMapping.length === 0) continue;
+
+      // Return ALL matching chart entries (different partner types) instead of LIMIT 1
+      const chartEntries = await db
+        .select()
+        .from(awardCharts)
+        .where(
+          and(
+            eq(awardCharts.programId, program.programId),
+            eq(awardCharts.originRegionId, originMapping[0].regionId),
+            eq(awardCharts.destinationRegionId, destMapping[0].regionId),
+            eq(awardCharts.cabinClass, cabinClass)
+          )
+        );
+
+      if (chartEntries.length === 0) continue;
+
+      for (const chart of chartEntries) {
+        const routeAvailable = await hasRouteAvailability(
+          program.programId,
+          program.allianceId,
+          chart.partnerType,
+          originCodes,
+          destinationCodes
+        );
+        if (!routeAvailable) continue;
+
+        const transferOptions = await getTransferOptions(
+          program.programId,
+          chart.minMiles,
+          enabledCreditCardPrograms
+        );
+
+        results.push({
+          airlineProgram: {
+            id: program.programId,
+            name: program.programName,
+            code: program.programCode,
+            hasDynamicPricing: program.hasDynamicPricing,
+            pricingModel: program.pricingModel,
+            searchUrl,
+            alliance: program.allianceName,
+          },
+          awardCost: {
+            minMiles: chart.minMiles,
+            maxMiles: chart.maxMiles,
+            typicalMiles: chart.typicalMiles,
+            isOneWay: chart.isOneWay,
+            notes: chart.notes,
+          },
+          originRegion: originMapping[0].regionName,
+          destinationRegion: destMapping[0].regionName,
+          transferOptions,
         });
       }
     }
-
-    // Generate search URL (use first resolved airport code for metro areas)
-    let searchUrl = program.searchUrlTemplate;
-    if (searchUrl) {
-      const today = new Date();
-      const futureDate = new Date(today);
-      futureDate.setDate(today.getDate() + 30); // Default to 30 days out
-      const dateStr = futureDate.toISOString().split("T")[0];
-
-      searchUrl = searchUrl
-        .replace("{origin}", originCodes[0])
-        .replace("{destination}", destinationCodes[0])
-        .replace("{date}", dateStr);
-    }
-
-    results.push({
-      airlineProgram: {
-        id: program.programId,
-        name: program.programName,
-        code: program.programCode,
-        hasDynamicPricing: program.hasDynamicPricing,
-        pricingModel: program.pricingModel,
-        searchUrl,
-        alliance: program.allianceName,
-      },
-      awardCost: {
-        minMiles: chart.minMiles,
-        maxMiles: chart.maxMiles,
-        typicalMiles: chart.typicalMiles,
-        isOneWay: chart.isOneWay,
-        notes: chart.notes,
-      },
-      originRegion: originMapping[0].regionName,
-      destinationRegion: destMapping[0].regionName,
-      transferOptions,
-    });
   }
 
   // Sort by minimum miles required

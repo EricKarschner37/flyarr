@@ -97,8 +97,8 @@ async function getProgramDetails(code: string) {
 
   const chartsWithRegions = charts.map((chart) => ({
     ...chart,
-    originRegion: regionMap.get(chart.originRegionId) || null,
-    destinationRegion: regionMap.get(chart.destinationRegionId) || null,
+    originRegion: chart.originRegionId ? regionMap.get(chart.originRegionId) || null : null,
+    destinationRegion: chart.destinationRegionId ? regionMap.get(chart.destinationRegionId) || null : null,
   }));
 
   // Get alliance partners

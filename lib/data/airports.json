@@ -51,6 +51,7 @@
   {"code": "BUR", "name": "Hollywood Burbank Airport", "city": "Burbank", "country": "United States", "countryCode": "US", "lat": 34.2006, "lng": -118.3585},
   {"code": "ABQ", "name": "Albuquerque International Sunport", "city": "Albuquerque", "country": "United States", "countryCode": "US", "lat": 35.0402, "lng": -106.6094},
   {"code": "ANC", "name": "Ted Stevens Anchorage International Airport", "city": "Anchorage", "country": "United States", "countryCode": "US", "lat": 61.1743, "lng": -149.9962},
+  {"code": "MSY", "name": "Louis Armstrong New Orleans International Airport", "city": "New Orleans", "country": "United States", "countryCode": "US", "lat": 29.9934, "lng": -90.2580},
 
   {"code": "NRT", "name": "Narita International Airport", "city": "Tokyo", "country": "Japan", "countryCode": "JP", "lat": 35.7647, "lng": 140.3864, "metro": "TYO"},
   {"code": "HND", "name": "Tokyo Haneda Airport", "city": "Tokyo", "country": "Japan", "countryCode": "JP", "lat": 35.5494, "lng": 139.7798, "metro": "TYO"},
