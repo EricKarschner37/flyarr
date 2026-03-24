@@ -1,8 +1,13 @@
 #!/bin/sh
 set -e
 
-echo "Waiting for database..."
-until nc -z postgres 5432 2>/dev/null; do
+# Parse host and port from DATABASE_URL
+DB_HOST=$(echo "$DATABASE_URL" | sed -n 's|.*@\([^:/]*\).*|\1|p')
+DB_PORT=$(echo "$DATABASE_URL" | sed -n 's|.*:\([0-9]*\)/.*|\1|p')
+DB_PORT=${DB_PORT:-5432}
+
+echo "Waiting for database at ${DB_HOST}:${DB_PORT}..."
+until nc -z "$DB_HOST" "$DB_PORT" 2>/dev/null; do
   sleep 1
 done
 echo "Database is reachable."
