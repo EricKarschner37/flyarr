@@ -21,5 +21,9 @@ pnpm db:seed
 echo "Building Next.js app..."
 pnpm build
 
+# Standalone output needs static files and public dir copied in
+cp -r .next/static .next/standalone/.next/static
+cp -r public .next/standalone/public
+
 echo "Starting server..."
 node .next/standalone/server.js
