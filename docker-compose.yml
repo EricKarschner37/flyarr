@@ -1,5 +1,6 @@
 services:
   postgres:
+    restart: unless-stopped
     image: postgres:16-alpine
     container_name: flyarr-db
     environment:
@@ -15,6 +16,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  flyarr:
+    restart: unless-stopped
+    build: .
+    ports:
+      - "9092:3000"
 
 volumes:
   flyarr_data:
