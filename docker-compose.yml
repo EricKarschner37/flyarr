@@ -21,6 +21,11 @@ services:
     build: .
     ports:
       - "9092:3000"
+    environment:
+      DATABASE_URL: postgresql://flyarr:flyarr@postgres:5432/flyarr
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   flyarr_data:
