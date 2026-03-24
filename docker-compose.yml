@@ -2,6 +2,7 @@ services:
   postgres:
     restart: unless-stopped
     image: postgres:16-alpine
+    container_name: flyarr-db
     environment:
       POSTGRES_USER: flyarr
       POSTGRES_PASSWORD: flyarr
